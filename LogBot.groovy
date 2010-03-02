@@ -1,23 +1,17 @@
-import java.util.regex.*
-import java.text.SimpleDateFormat
-
 @Grab("pircbot:pircbot:1.4.2")
 import org.jibble.pircbot.*
 
-public class LogBot extends PircBot {
+class LogBot extends PircBot {
 
-    private writeLog(type, channel, nick, message) {
-        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
-        println "$time $channel $nick $type $message"
-    }
+    private appender
 
     public void onJoin(String channel, String sender, String login, String hostname) {
-        writeLog("JOIN", channel, sender, "* $sender (${login}@${hostname}) has joined $channel")
+        append("JOIN", channel, sender, "* $sender (${login}@${hostname}) has joined $channel")
         op(channel, sender) // auto op provider
     }
 
     public void onMessage(String channel, String sender, String login, String hostname, String message) {
-        writeLog("PRIVMSG", channel, sender, message)
+        append("PRIVMSG", channel, sender, message)
 
         // なると消失状態に対応するため、"!bye"発言に反応してPARTするようにしている。
         if (message ==~ /!bye/) {
@@ -26,23 +20,23 @@ public class LogBot extends PircBot {
     }
 
     public void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice) {
-        writeLog("NOTICE", target, sourceNick, notice)
+        append("NOTICE", target, sourceNick, notice)
     }
 
     public void onMode(String channel, String sourceNick, String sourceLogin, String sourceHostname, String mode) {
-        writeLog("MODE", channel, sourceNick, "* " + sourceNick + " sets mode " + mode)
+        append("MODE", channel, sourceNick, "* " + sourceNick + " sets mode " + mode)
     }
 
     public void onPart(String channel, String sender, String login, String hostname) {
-        writeLog("PART", channel, sender, "* " + sender + " (" + login + "@" + hostname + ") has left " + channel)
+        append("PART", channel, sender, "* " + sender + " (" + login + "@" + hostname + ") has left " + channel)
     }
 
     public void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
-        if (changed) writeLog("TOPIC", channel, setBy, topic)
+        if (changed) append("TOPIC", channel, setBy, topic)
     }
 
     public void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
-        writeLog("TOPIC", channel, kickerNick, "* " + recipientNick + " was kicked from " + channel + " by " + kickerNick)
+        append("TOPIC", channel, kickerNick, "* " + recipientNick + " was kicked from " + channel + " by " + kickerNick)
     }
 
     // INVITEされればどこへでも。ただし入室キーが設定されてるチャンネルは無理。
@@ -66,9 +60,9 @@ public class LogBot extends PircBot {
         }
     }
 
-    //public void onNickChange(String oldNick, String login, String hostname, String newNick) {}
-    //public void onPrivateMessage(String sender, String login, String hostname, String message) {}
-    //public void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {}
-    //public void onTime(String sourceNick, String sourceLogin, String sourceHostname, String target) {}
+    private append(type, channel, nick, message) {
+        String time = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+        appender.write(time, channel, nick, type, message)
+    }
 }
 
