@@ -3,6 +3,7 @@ import org.jibble.pircbot.*
 
 class LogBot extends PircBot {
 
+    private missingChannel
     private appender
 
     void onJoin(String channel, String sender, String login, String hostname) {
@@ -32,7 +33,9 @@ class LogBot extends PircBot {
     }
 
     void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
-        if (changed) append("TOPIC", channel, setBy, "* TOPIC: ${topic} (by ${setBy})")
+        if (changed) {
+            append("TOPIC", channel, setBy, "* TOPIC: ${topic} (by ${setBy})")
+        }
     }
 
     void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
@@ -44,31 +47,17 @@ class LogBot extends PircBot {
         joinChannel(channel)
         sendNotice(channel, "一生懸命ロギングするのでよろしくお願いします!")
     }
-/*
-      'NICK'    => '* {nick} -> {newnick}',
-      'QUIT'    => '- {nick} (QUIT: {msg}) ({prefix:user}@{prefix:host})',
-*/
+
     void onNickChange(String oldNick, String login, String hostname, String newNick) {
-        getChannelsJoinedUser(newNick).each { channel ->
-            append("NICK", channel, oldNick, "* ${oldNick} -> ${newNick}")
+        if (missingChannel) {
+            append("NICK", missingChannel, oldNick, "* ${oldNick} -> ${newNick}")
         }
     }
 
     void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {
-        getChannelsJoinedUser(sourceNick).each { channel ->
-            append("QUI", channel, oldNick, "- ${sourceNick} (QUIT: ${reason}) (${sourceLogin}@${sourceHostname})")
+        if (missingChannel) {
+            append("QUIT", missingChannel, sourceNick, "- ${sourceNick} (QUIT: ${reason}) (${sourceLogin}@${sourceHostname})")
         }
-    }
-
-    private getChannelsJoinedUser(nick) {
-        channels.findAll { channel ->
-            nick in getUsers(channel).nick
-        }
-    }
-
-    void handleLine(String line) {
-        println ">>>>>>>" + line
-        super.handleLine(line)
     }
 
     public void onDisconnect() {
