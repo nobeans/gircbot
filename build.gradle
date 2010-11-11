@@ -1,0 +1,62 @@
+/*
+ * Copyright 2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin:'groovy'
+apply plugin:'maven'
+
+repositories {
+    mavenCentral()
+    mavenRepo urls: [
+        "http://repository.codehaus.org/",
+    ]
+}
+dependencies {
+    groovy 'org.codehaus.groovy:groovy:1.7.5'
+    testCompile 'junit:junit:4.8.2'
+    compile 'postgresql:postgresql:8.4-702.jdbc3'
+    compile 'pircbot:pircbot:1.4.2'
+}
+
+def defaultEncoding = 'UTF-8'
+compileJava {
+    options.encoding = defaultEncoding
+}
+compileTestJava {
+    options.encoding = defaultEncoding
+}
+compileGroovy {
+    groovyOptions.encoding = defaultEncoding
+    options.encoding = defaultEncoding
+}
+compileTestGroovy {
+    groovyOptions.encoding = defaultEncoding
+    options.encoding = defaultEncoding
+}
+
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        // If you want to deploy it, set an entry which has a key of 'kobo.maven.dir' at System properties.
+//        // ex) $HOME/.gradle/gradle.properties: systemProp.kobo.maven.dirs=$HOME/myrepos/maven2
+//        repository url: System.properties['kobo.maven.dir']
+//    }
+//}
+//
+//test.doLast {
+//    if (Boolean.valueOf(System.properties["showReport"])) {
+//        'open build/reports/tests/index.html'.execute()
+//    }
+//}
+

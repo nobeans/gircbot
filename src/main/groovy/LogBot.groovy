@@ -1,4 +1,3 @@
-@Grab("pircbot:pircbot:1.4.2")
 import org.jibble.pircbot.*
 
 class LogBot extends PircBot {

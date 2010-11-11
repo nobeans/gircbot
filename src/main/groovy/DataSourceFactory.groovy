@@ -1,4 +1,3 @@
-@Grab('postgresql:postgresql:*')
 import org.postgresql.jdbc3.Jdbc3SimpleDataSource
 import javax.sql.DataSource
 
