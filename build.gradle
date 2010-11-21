@@ -16,6 +16,7 @@
 
 apply plugin:'groovy'
 apply plugin:'maven'
+apply plugin:'eclipse'
 
 repositories {
     mavenCentral()
@@ -26,8 +27,11 @@ repositories {
 dependencies {
     groovy 'org.codehaus.groovy:groovy:1.7.5'
     testCompile 'junit:junit:4.8.2'
+    testCompile 'org.mockito:mockito-all:1.8.5'
     compile 'postgresql:postgresql:8.4-702.jdbc3'
     compile 'pircbot:pircbot:1.4.2'
+    runtime 'commons-logging:commons-logging:1.1.1'
+    runtime 'log4j:log4j:1.2.9'
 }
 
 def defaultEncoding = 'UTF-8'

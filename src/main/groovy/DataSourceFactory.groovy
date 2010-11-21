@@ -4,7 +4,7 @@ import javax.sql.DataSource
 class DataSourceFactory {
 
     DataSource newInstance(Map propMap) {
-        def dataSource = new Jdbc3SimpleDataSource()
+        def dataSource = new Jdbc3SimpleDataSource()        
         def defaultMap = {
             serverName = "silver"
             portNumber = 5432
