@@ -19,4 +19,5 @@
   <classpathentry sourcepath="GRADLE_CACHE/log4j/log4j/sources/log4j-1.2.9-sources.jar" kind="var" path="GRADLE_CACHE/log4j/log4j/jars/log4j-1.2.9.jar" exported="true"/>
   <classpathentry sourcepath="GRADLE_CACHE/commons-logging/commons-logging/sources/commons-logging-1.1.1-sources.jar" kind="var" path="GRADLE_CACHE/commons-logging/commons-logging/jars/commons-logging-1.1.1.jar" exported="true"/>
   <classpathentry output="build/classes/main" kind="src" path="src/main/resources"/>
+  <classpathentry output="build/classes/test" kind="src" path="src/test/resources"/>
 </classpath>
