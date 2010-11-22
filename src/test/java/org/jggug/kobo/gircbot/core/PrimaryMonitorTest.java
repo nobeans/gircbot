@@ -130,6 +130,7 @@ public class PrimaryMonitorTest {
         boolean actual = primaryMonitor.isPrimary("#test");
         // Verify
         assertTrue(actual);
+        assertTrue(primaryMonitor.wasPrimary);
         verify(primaryMonitor).getJoinedNicks("#test");
         verify(ircControl).sendNotice(eq("#test"), anyString());
     }
@@ -143,6 +144,7 @@ public class PrimaryMonitorTest {
         boolean actual = primaryMonitor.isPrimary("#test");
         // Verify
         assertFalse(actual);
+        assertFalse(primaryMonitor.wasPrimary);
         verify(primaryMonitor).getJoinedNicks("#test");
         verify(ircControl).sendNotice(eq("#test"), anyString());
     }
