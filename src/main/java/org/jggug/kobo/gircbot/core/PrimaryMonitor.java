@@ -13,6 +13,7 @@ public class PrimaryMonitor {
     protected String defaultChannel;
     protected List<String> orderedPrimaryNicks;
     protected IrcControl ircControl;
+    protected boolean wasPrimary = false;
 
     public PrimaryMonitor(String defaultChannel, List<String> orderedPrimaryNicks, IrcControl ircControl) {
         this.defaultChannel = defaultChannel;
@@ -38,9 +39,24 @@ public class PrimaryMonitor {
         workNicks.retainAll(joinedNicks);
         LOG.debug(String.format("orderedPrimaryNicks: %s -> %s", orderedPrimaryNicks, workNicks));
 
+        // when the first element is the own nick, this bot is primary.
         int index = workNicks.indexOf(myNick);
         LOG.debug(String.format("checking: %s in %s(index: %d)", myNick, workNicks, index));
-        return index == 0; // when it's first element, this bot is primary. 
+        boolean isPrimary = (index == 0);
+        if (isPrimary && !wasPrimary) {
+            ircControl.sendNotice(channel, "Now I've been primary bot yet.");
+            LOG.info(String.format("Now I've been primary bot: %s in %s", myNick, workNicks));
+            wasPrimary = true;
+            return true;
+        }
+        if (!isPrimary && wasPrimary) {
+            ircControl.sendNotice(channel, "Now I hanven't been primary bot yet.");
+            LOG.info(String.format("Now I hanven't been primary bot yet: %s in %s", myNick, workNicks));
+            wasPrimary = false;
+            return false;
+        }
+        assert (isPrimary == wasPrimary) : "Status not changed";
+        return isPrimary;
     }
 
     protected List<String> getJoinedNicks(String channel) {

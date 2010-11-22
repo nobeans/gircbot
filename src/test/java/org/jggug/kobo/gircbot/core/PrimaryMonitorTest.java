@@ -2,9 +2,11 @@ package org.jggug.kobo.gircbot.core;
 
 import java.util.Arrays;
 import java.util.List;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 public class PrimaryMonitorTest {
@@ -13,8 +15,6 @@ public class PrimaryMonitorTest {
     private String defaultChannel;
     private List<String> orderedPrimaryNicks;
     private IrcControl ircControl;
-    private List<String> returnValueToGetJoinedNicks;
-    private String expectedChannel;
 
     @Before
     public void before() throws Exception {
@@ -25,35 +25,42 @@ public class PrimaryMonitorTest {
         ircControl = mock(IrcControl.class);
         when(ircControl.getNick()).thenReturn("bot2");
         // Setup SUT
-        returnValueToGetJoinedNicks = Arrays.asList("bot1", "bot2", "bot3");
-        expectedChannel = "#test";
-        primaryMonitor = new PrimaryMonitor(defaultChannel, orderedPrimaryNicks, ircControl) {
-            @Override
-            protected List<String> getJoinedNicks(String channel) {
-                assertEquals(expectedChannel, channel);
-                return returnValueToGetJoinedNicks;
-            }
-        };
+        primaryMonitor = spy(new PrimaryMonitor(defaultChannel, orderedPrimaryNicks, ircControl));
+    }
+
+    @After
+    public void after() throws Exception {
+        verify(ircControl).getNick();
     }
 
     @Test
     public void isPrimary_existingPriorerNickThanMe_toBeFalse() throws Exception {
-        // Exercise & Verify
-        assertFalse(primaryMonitor.isPrimary("#test"));
+        // Setup
+        doReturn(Arrays.asList("bot1", "bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertFalse(actual);
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl, never()).sendNotice(anyString(), anyString());
     }
 
     @Test
     public void isPrimary_notExistingPriorerNickThanMe_toBeTrue() throws Exception {
         // Setup
-        returnValueToGetJoinedNicks = Arrays.asList("bot2", "bot3");
-        // Exercise & Verify
-        assertTrue(primaryMonitor.isPrimary("#test"));
+        doReturn(Arrays.asList("bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertTrue(actual);
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl).sendNotice(eq("#test"), anyString());
     }
 
     @Test
     public void isPrimary_notExistingMe_toThrowException() throws Exception {
         // Setup
-        returnValueToGetJoinedNicks = Arrays.asList("bot3");
+        doReturn(Arrays.asList("bot3")).when(primaryMonitor).getJoinedNicks("#test");
         // Exercise & Verify
         try {
             primaryMonitor.isPrimary("#test");
@@ -66,7 +73,7 @@ public class PrimaryMonitorTest {
     @Test
     public void isPrimary_notExistingAnyone_toThrowException() throws Exception {
         // Setup
-        returnValueToGetJoinedNicks = Arrays.<String>asList();
+        doReturn(Arrays.asList()).when(primaryMonitor).getJoinedNicks("#test");
         // Exercise & Verify
         try {
             primaryMonitor.isPrimary("#test");
@@ -79,6 +86,7 @@ public class PrimaryMonitorTest {
     @Test
     public void isPrimary_emptyOrderedPrimaryNicks_toThrowException() throws Exception {
         // Setup
+        doReturn(Arrays.asList("bot1", "bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
         primaryMonitor.orderedPrimaryNicks = Arrays.<String>asList();
         // Exercise & Verify
         try {
@@ -92,18 +100,25 @@ public class PrimaryMonitorTest {
     @Test
     public void isPrimaryGlobally_existingPriorerNickThanMe_toBeFalse() throws Exception {
         // Setup
-        expectedChannel = "#default";
-        // Exercise & Verify
-        assertFalse(primaryMonitor.isPrimaryGlobally());
+        doReturn(Arrays.asList("bot1", "bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#default");
+        // Exercise
+        boolean actual = primaryMonitor.isPrimaryGlobally();
+        // Verify
+        assertFalse(actual);
+        verify(primaryMonitor).getJoinedNicks("#default");
+        verify(ircControl, never()).sendNotice(anyString(), anyString());
     }
 
     @Test
     public void isPrimaryGlobally_notExistingPriorerNickThanMe_toBeTrue() throws Exception {
         // Setup
-        returnValueToGetJoinedNicks = Arrays.asList("bot2", "bot3");
-        expectedChannel = "#default";
-        // Exercise & Verify
-        assertTrue(primaryMonitor.isPrimaryGlobally());
+        doReturn(Arrays.asList("bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#default");
+        // Exercise
+        boolean actual = primaryMonitor.isPrimaryGlobally();
+        // Verify
+        assertTrue(actual);
+        verify(primaryMonitor).getJoinedNicks("#default");
+        verify(ircControl).sendNotice(eq("#default"), anyString());
     }
 
 }

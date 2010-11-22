@@ -8,4 +8,7 @@ public interface IrcControl {
 
     String getNick();
 
+    void sendMessage(String target, String message);
+
+    void sendNotice(String channel, String message);
 }
