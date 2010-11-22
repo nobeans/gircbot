@@ -44,18 +44,20 @@ public class PrimaryMonitor {
         LOG.debug(String.format("checking: %s in %s(index: %d)", myNick, workNicks, index));
         boolean isPrimary = (index == 0);
         if (isPrimary && !wasPrimary) {
-            ircControl.sendNotice(channel, "Now I've been primary bot yet.");
-            LOG.info(String.format("Now I've been primary bot: %s in %s", myNick, workNicks));
+            String message = MessageUtils.getMessage("change.primary");
+            ircControl.sendNotice(channel, message);
+            LOG.info(String.format("%s: %s in %s", message, myNick, workNicks));
             wasPrimary = true;
             return true;
         }
         if (!isPrimary && wasPrimary) {
-            ircControl.sendNotice(channel, "Now I hanven't been primary bot yet.");
-            LOG.info(String.format("Now I hanven't been primary bot yet: %s in %s", myNick, workNicks));
+            String message = MessageUtils.getMessage("change.secondary");
+            ircControl.sendNotice(channel, message);
+            LOG.info(String.format("%s: %s in %s", message, myNick, workNicks));
             wasPrimary = false;
             return false;
         }
-        assert (isPrimary == wasPrimary) : "Status not changed";
+        assert (isPrimary == wasPrimary) : "Status is not changed";
         return isPrimary;
     }
 

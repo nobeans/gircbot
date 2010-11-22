@@ -121,4 +121,30 @@ public class PrimaryMonitorTest {
         verify(ircControl).sendNotice(eq("#default"), anyString());
     }
 
+    @Test
+    public void isPrimary_notPrimaryToPrimary() throws Exception {
+        // Setup
+        doReturn(Arrays.asList("bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
+        primaryMonitor.wasPrimary = false;
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertTrue(actual);
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl).sendNotice(eq("#test"), anyString());
+    }
+
+    @Test
+    public void isPrimary_primaryToNotPrimary() throws Exception {
+        // Setup
+        doReturn(Arrays.asList("bot1", "bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
+        primaryMonitor.wasPrimary = true;
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertFalse(actual);
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl).sendNotice(eq("#test"), anyString());
+    }
+
 }
