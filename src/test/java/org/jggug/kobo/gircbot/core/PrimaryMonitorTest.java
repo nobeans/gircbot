@@ -7,9 +7,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class PrimaryCheckerTest {
+public class PrimaryMonitorTest {
 
-    private PrimaryChecker primaryChecker;
+    private PrimaryMonitor primaryMonitor;
     private String defaultChannel;
     private List<String> orderedPrimaryNicks;
     private IrcControl ircControl;
@@ -27,7 +27,7 @@ public class PrimaryCheckerTest {
         // Setup SUT
         returnValueToGetJoinedNicks = Arrays.asList("bot1", "bot2", "bot3");
         expectedChannel = "#test";
-        primaryChecker = new PrimaryChecker(defaultChannel, orderedPrimaryNicks, ircControl) {
+        primaryMonitor = new PrimaryMonitor(defaultChannel, orderedPrimaryNicks, ircControl) {
             @Override
             protected List<String> getJoinedNicks(String channel) {
                 assertEquals(expectedChannel, channel);
@@ -39,7 +39,7 @@ public class PrimaryCheckerTest {
     @Test
     public void isPrimary_existingPriorerNickThanMe_toBeFalse() throws Exception {
         // Exercise & Verify
-        assertFalse(primaryChecker.isPrimary("#test"));
+        assertFalse(primaryMonitor.isPrimary("#test"));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class PrimaryCheckerTest {
         // Setup
         returnValueToGetJoinedNicks = Arrays.asList("bot2", "bot3");
         // Exercise & Verify
-        assertTrue(primaryChecker.isPrimary("#test"));
+        assertTrue(primaryMonitor.isPrimary("#test"));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class PrimaryCheckerTest {
         returnValueToGetJoinedNicks = Arrays.asList("bot3");
         // Exercise & Verify
         try {
-            primaryChecker.isPrimary("#test");
+            primaryMonitor.isPrimary("#test");
             fail();
         } catch (IllegalStateException e) {
             assertEquals("why isn't there this bot in joinedNicks? : bot2 in [bot3]", e.getMessage());
@@ -69,7 +69,7 @@ public class PrimaryCheckerTest {
         returnValueToGetJoinedNicks = Arrays.<String>asList();
         // Exercise & Verify
         try {
-            primaryChecker.isPrimary("#test");
+            primaryMonitor.isPrimary("#test");
             fail();
         } catch (IllegalStateException e) {
             assertEquals("why isn't there this bot in joinedNicks? : bot2 in []", e.getMessage());
@@ -79,10 +79,10 @@ public class PrimaryCheckerTest {
     @Test
     public void isPrimary_emptyOrderedPrimaryNicks_toThrowException() throws Exception {
         // Setup
-        primaryChecker.orderedPrimaryNicks = Arrays.<String>asList();
+        primaryMonitor.orderedPrimaryNicks = Arrays.<String>asList();
         // Exercise & Verify
         try {
-            primaryChecker.isPrimary("#test");
+            primaryMonitor.isPrimary("#test");
             fail();
         } catch (IllegalStateException e) {
             assertEquals("why isn't there this bot in orderedPrimaryNicks? : bot2 in []", e.getMessage());
@@ -94,7 +94,7 @@ public class PrimaryCheckerTest {
         // Setup
         expectedChannel = "#default";
         // Exercise & Verify
-        assertFalse(primaryChecker.isPrimaryGlobally());
+        assertFalse(primaryMonitor.isPrimaryGlobally());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class PrimaryCheckerTest {
         returnValueToGetJoinedNicks = Arrays.asList("bot2", "bot3");
         expectedChannel = "#default";
         // Exercise & Verify
-        assertTrue(primaryChecker.isPrimaryGlobally());
+        assertTrue(primaryMonitor.isPrimaryGlobally());
     }
 
 }

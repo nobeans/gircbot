@@ -9,9 +9,9 @@ import org.jibble.pircbot.User;
 
 public class GircBot extends PircBot implements IrcControl, IrcEventSource {
 
-    private PrimaryChecker primaryChecker;
+    private PrimaryMonitor primaryChecker;
 
-    private GircBot(PrimaryChecker primaryChecker) {
+    private GircBot(PrimaryMonitor primaryChecker) {
         this.primaryChecker = primaryChecker;
     }
 

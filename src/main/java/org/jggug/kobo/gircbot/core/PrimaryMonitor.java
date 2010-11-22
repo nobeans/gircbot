@@ -6,15 +6,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jibble.pircbot.User;
 
-public class PrimaryChecker {
+public class PrimaryMonitor {
 
-    private static final Log LOG = LogFactory.getLog(PrimaryChecker.class);
+    private static final Log LOG = LogFactory.getLog(PrimaryMonitor.class);
 
     protected String defaultChannel;
     protected List<String> orderedPrimaryNicks;
     protected IrcControl ircControl;
 
-    public PrimaryChecker(String defaultChannel, List<String> orderedPrimaryNicks, IrcControl ircControl) {
+    public PrimaryMonitor(String defaultChannel, List<String> orderedPrimaryNicks, IrcControl ircControl) {
         this.defaultChannel = defaultChannel;
         this.orderedPrimaryNicks = orderedPrimaryNicks;
         this.ircControl = ircControl;
