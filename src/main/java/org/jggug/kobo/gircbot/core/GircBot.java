@@ -375,7 +375,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
     @Override
     public void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String channel) {
         super.onInvite(targetNick, sourceNick, sourceLogin, sourceHostname, channel);
-        if (primaryMonitor == null || !primaryMonitor.isPrimary(channel)) return;
+        // MEMO: Here, listeners should be invoked always because "invite" is used when bot isn't in the channel.
         for (IrcEventListener listener : listeners) {
             listener.onInvite(targetNick, sourceNick, sourceLogin, sourceHostname, channel);
         }
