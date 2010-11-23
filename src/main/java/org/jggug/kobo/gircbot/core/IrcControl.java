@@ -6,9 +6,15 @@ public interface IrcControl {
 
     User[] getUsers(String channel);
 
+    User getUser(String channel);
+
     String getNick();
 
     void sendMessage(String target, String message);
 
     void sendNotice(String target, String notice);
+
+    void op(String channel, String login);
+
+
 }

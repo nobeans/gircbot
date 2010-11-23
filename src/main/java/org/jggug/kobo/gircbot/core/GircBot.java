@@ -462,4 +462,18 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         }
     }
 
+    // ---------------------------------------
+    // Helper methods
+    // ---------------------------------------
+
+    @Override
+    public User getUser(String channel) {
+        String nick = getNick();
+        for (User user : getUsers(channel)) {
+            if (user.getNick().equals(nick)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

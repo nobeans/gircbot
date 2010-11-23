@@ -45,15 +45,15 @@ public class PrimaryMonitor {
         boolean isPrimary = (index == 0);
         LOG.debug(String.format("checking: %s in %s %s (primary:%s)", myNick, channel, workNicks, isPrimary));
         if (isPrimary && !wasPrimary) {
-            String message = MessageUtils.getMessage("change.active");
-            ircControl.sendNotice(channel, message);
+            String message = MessageUtils.getMessage("core.GircBot.isPrimary.active");
+            ircControl.sendMessage(channel, message);
             LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
             wasPrimary = true;
             return true;
         }
         if (!isPrimary && wasPrimary) {
-            String message = MessageUtils.getMessage("change.standby");
-            ircControl.sendNotice(channel, message);
+            String message = MessageUtils.getMessage("core.GircBot.isPrimary.standby");
+            ircControl.sendMessage(channel, message);
             LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
             wasPrimary = false;
             return false;

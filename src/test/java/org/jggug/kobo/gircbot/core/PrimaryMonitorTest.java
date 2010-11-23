@@ -42,7 +42,7 @@ public class PrimaryMonitorTest {
         // Verify
         assertFalse(actual);
         verify(primaryMonitor).getJoinedNicks("#test");
-        verify(ircControl, never()).sendNotice(anyString(), anyString());
+        verify(ircControl, never()).sendMessage(anyString(), anyString());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class PrimaryMonitorTest {
         // Verify
         assertTrue(actual);
         verify(primaryMonitor).getJoinedNicks("#test");
-        verify(ircControl).sendNotice(eq("#test"), anyString());
+        verify(ircControl).sendMessage(eq("#test"), anyString());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class PrimaryMonitorTest {
         // Verify
         assertFalse(actual);
         verify(primaryMonitor).getJoinedNicks("#test");
-        verify(ircControl, never()).sendNotice(anyString(), anyString());
+        verify(ircControl, never()).sendMessage(anyString(), anyString());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class PrimaryMonitorTest {
         // Verify
         assertFalse(actual);
         verify(primaryMonitor).getJoinedNicks("#test");
-        verify(ircControl, never()).sendNotice(anyString(), anyString());
+        verify(ircControl, never()).sendMessage(anyString(), anyString());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class PrimaryMonitorTest {
         // Verify
         assertFalse(actual);
         verify(primaryMonitor).getJoinedNicks("#default");
-        verify(ircControl, never()).sendNotice(anyString(), anyString());
+        verify(ircControl, never()).sendMessage(anyString(), anyString());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class PrimaryMonitorTest {
         // Verify
         assertTrue(actual);
         verify(primaryMonitor).getJoinedNicks("#default");
-        verify(ircControl).sendNotice(eq("#default"), anyString());
+        verify(ircControl).sendMessage(eq("#default"), anyString());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class PrimaryMonitorTest {
         assertTrue(actual);
         assertTrue(primaryMonitor.wasPrimary);
         verify(primaryMonitor).getJoinedNicks("#test");
-        verify(ircControl).sendNotice(eq("#test"), anyString());
+        verify(ircControl).sendMessage(eq("#test"), anyString());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class PrimaryMonitorTest {
         assertFalse(actual);
         assertFalse(primaryMonitor.wasPrimary);
         verify(primaryMonitor).getJoinedNicks("#test");
-        verify(ircControl).sendNotice(eq("#test"), anyString());
+        verify(ircControl).sendMessage(eq("#test"), anyString());
     }
 
 }
