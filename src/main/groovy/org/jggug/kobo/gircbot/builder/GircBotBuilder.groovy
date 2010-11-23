@@ -1,5 +1,6 @@
 package org.jggug.kobo.gircbot.builder
 
+import java.util.List;
 import org.jggug.kobo.gircbot.core.*
 
 class GircBotBuilder {
@@ -7,6 +8,10 @@ class GircBotBuilder {
     GircBot bot = new GircBot()
     boolean debug = false
     Map config = [:]
+    
+    GircBotBuilder() {
+        bot = new GircBot()
+    }
     
     def config(Closure clos) {
         expandClosure(clos)
@@ -46,6 +51,7 @@ class GircBotBuilder {
         config.each { name, args ->
             debugLog "Config: $name = $args"
         }
+        bot.primaryMonitor = new PrimaryMonitor("#test", config["nick.primaryOrder"] as List, bot)
         config["reactors"].each { reactor ->
             bot.addIrcEventListener(reactor)
         }

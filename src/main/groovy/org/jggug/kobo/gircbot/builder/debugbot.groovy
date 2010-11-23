@@ -3,7 +3,7 @@
 import org.jggug.kobo.gircbot.builder.*
 import org.jggug.kobo.gircbot.core.*
 
-new GircBotBuilder(debug:true).config { irc ->
+new GircBotBuilder(debug:true).config { IrcControl irc ->
     server {
         host "silver"
         port 6667
@@ -16,12 +16,13 @@ new GircBotBuilder(debug:true).config { irc ->
     reactors (
         new Reactor(irc) {
             void onMessage(String channel, String sender, String login, String hostname, String message) {
-                println "1> $channel $message"
+                irc.sendMessage "#test", "1> $channel $message"
+                irc.sendMessage "ynak", "3> $channel $message"
             }
         },
         new Reactor(irc) {
             void onMessage(String channel, String sender, String login, String hostname, String message) {
-                println "2> $channel $message"
+                irc.sendNotice "#test", "2> $channel ${message.reverse()}"
             }
         },
     )

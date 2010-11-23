@@ -10,5 +10,5 @@ public interface IrcControl {
 
     void sendMessage(String target, String message);
 
-    void sendNotice(String channel, String message);
+    void sendNotice(String target, String notice);
 }
