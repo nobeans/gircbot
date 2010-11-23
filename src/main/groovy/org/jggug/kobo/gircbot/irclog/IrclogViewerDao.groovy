@@ -1,4 +1,4 @@
-package org.jggug.kobo.gircbot.irclogviewer;
+package org.jggug.kobo.gircbot.irclog;
 
 import java.util.List;
 

@@ -38,21 +38,21 @@ public class PrimaryMonitor {
 
         List<String> workNicks = new ArrayList<String>(orderedPrimaryNicks);
         workNicks.retainAll(joinedNicks);
-        LOG.debug(String.format("orderedPrimaryNicks: %s -> %s", orderedPrimaryNicks, workNicks));
+        LOG.debug(String.format("filtering orderedPrimaryNicks: %s -> %s", orderedPrimaryNicks, workNicks));
 
         // when the first element is the own nick, this bot is primary.
         int index = workNicks.indexOf(myNick);
-        LOG.debug(String.format("checking: %s in %s(index: %d)", myNick, workNicks, index));
         boolean isPrimary = (index == 0);
+        LOG.debug(String.format("checking: %s in %s %s (primary:%s)", myNick, channel, workNicks, isPrimary));
         if (isPrimary && !wasPrimary) {
-            String message = MessageUtils.getMessage("change.primary");
+            String message = MessageUtils.getMessage("change.active");
             ircControl.sendNotice(channel, message);
             LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
             wasPrimary = true;
             return true;
         }
         if (!isPrimary && wasPrimary) {
-            String message = MessageUtils.getMessage("change.secondary");
+            String message = MessageUtils.getMessage("change.standby");
             ircControl.sendNotice(channel, message);
             LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
             wasPrimary = false;
