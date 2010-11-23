@@ -58,29 +58,27 @@ public class PrimaryMonitorTest {
     }
 
     @Test
-    public void isPrimary_notExistingMe_toThrowException() throws Exception {
+    public void isPrimary_notExistingMe_toBeFalse() throws Exception {
         // Setup
         doReturn(Arrays.asList("bot3")).when(primaryMonitor).getJoinedNicks("#test");
-        // Exercise & Verify
-        try {
-            primaryMonitor.isPrimary("#test");
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("why isn't there this bot in joinedNicks? : bot2 in [bot3]", e.getMessage());
-        }
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertFalse(actual);
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl, never()).sendNotice(anyString(), anyString());
     }
 
     @Test
     public void isPrimary_notExistingAnyone_toThrowException() throws Exception {
         // Setup
         doReturn(Arrays.asList()).when(primaryMonitor).getJoinedNicks("#test");
-        // Exercise & Verify
-        try {
-            primaryMonitor.isPrimary("#test");
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("why isn't there this bot in joinedNicks? : bot2 in []", e.getMessage());
-        }
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertFalse(actual);
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl, never()).sendNotice(anyString(), anyString());
     }
 
     @Test
@@ -93,7 +91,7 @@ public class PrimaryMonitorTest {
             primaryMonitor.isPrimary("#test");
             fail();
         } catch (IllegalStateException e) {
-            assertEquals("why isn't there this bot in orderedPrimaryNicks? : bot2 in []", e.getMessage());
+            assertEquals("Why isn't there this bot in orderedPrimaryNicks? : bot2 in #test []", e.getMessage());
         }
     }
 

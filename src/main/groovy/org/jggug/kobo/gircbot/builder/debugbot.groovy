@@ -1,7 +1,8 @@
 //@GrabResolver(name="local", root="file://localhost/Users/ynak/.m2/repository")
 //@Grab("org.jggug.kobo:gircbot:0.1-SNAPSHOT")
-import org.jggug.kobo.gircbot.builder.*
+import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.*
+import org.jggug.kobo.gircbot.reactors.*
 
 new GircBotBuilder(debug:true).config { IrcControl irc ->
     server {
@@ -25,6 +26,7 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
                 irc.sendNotice "#test", "2> $channel ${message.reverse()}"
             }
         },
+        new Debugger(irc)
     )
     jobs()
 }.start()

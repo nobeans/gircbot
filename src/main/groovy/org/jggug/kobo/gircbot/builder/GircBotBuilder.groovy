@@ -4,21 +4,21 @@ import java.util.List;
 import org.jggug.kobo.gircbot.core.*
 
 class GircBotBuilder {
-    
+
     GircBot bot = new GircBot()
     boolean debug = false
     Map config = [:]
-    
+
     GircBotBuilder() {
         bot = new GircBot()
     }
-    
+
     def config(Closure clos) {
         expandClosure(clos)
         clos.call(bot)
         return this
     }
-    
+
     def expandClosure(Closure c) {
         c.metaClass {
             def namePath = []
@@ -26,7 +26,7 @@ class GircBotBuilder {
                 debugLog "Method: $name($args)"
                 namePath << name
                 def paramName = namePath.join(".")
-                
+
                 def closureArgs = args.findAll{ it.class in Closure }
                 if (closureArgs.size() > 1) {
                     throw new IllegalArgumentException("Allowed only one Closure argument per one method")
@@ -45,7 +45,7 @@ class GircBotBuilder {
             }
         }
     }
-    
+
     void start() {
         debugLog "Starting bot..."
         config.each { name, args ->
@@ -63,7 +63,7 @@ class GircBotBuilder {
         }
         debugLog "Now bot is running as ${bot.name}."
     }
-    
+
     void debugLog(message) {
         if (debug) println "[DEBUG] $message"
     }

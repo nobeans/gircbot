@@ -27,12 +27,13 @@ public class PrimaryMonitor {
         List<String> joinedNicks = getJoinedNicks(channel);
         LOG.debug(String.format("joinedNicks: %s", joinedNicks));
         if (!joinedNicks.contains(myNick)) {
-            throw new IllegalStateException(String.format("why isn't there this bot in joinedNicks? : %s in %s", myNick, joinedNicks));
+            LOG.debug(String.format("This bot seems not to join yet.: %s in %s %s", myNick, channel, joinedNicks));
+            return false;
         }
 
         LOG.debug(String.format("orderedPrimaryNicks: %s", orderedPrimaryNicks));
         if (!orderedPrimaryNicks.contains(myNick)) {
-            throw new IllegalStateException(String.format("why isn't there this bot in orderedPrimaryNicks? : %s in %s", myNick, orderedPrimaryNicks));
+            throw new IllegalStateException(String.format("Why isn't there this bot in orderedPrimaryNicks? : %s in %s %s", myNick, channel, orderedPrimaryNicks));
         }
 
         List<String> workNicks = new ArrayList<String>(orderedPrimaryNicks);
@@ -46,14 +47,14 @@ public class PrimaryMonitor {
         if (isPrimary && !wasPrimary) {
             String message = MessageUtils.getMessage("change.primary");
             ircControl.sendNotice(channel, message);
-            LOG.info(String.format("%s: %s in %s", message, myNick, workNicks));
+            LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
             wasPrimary = true;
             return true;
         }
         if (!isPrimary && wasPrimary) {
             String message = MessageUtils.getMessage("change.secondary");
             ircControl.sendNotice(channel, message);
-            LOG.info(String.format("%s: %s in %s", message, myNick, workNicks));
+            LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
             wasPrimary = false;
             return false;
         }
