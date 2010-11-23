@@ -1,7 +1,3 @@
-import org.jggug.kobo.gircbot.reactors.OpDistributor;
-
-//@GrabResolver(name="local", root="file://localhost/Users/ynak/.m2/repository")
-//@Grab("org.jggug.kobo:gircbot:0.1-SNAPSHOT")
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.*
 import org.jggug.kobo.gircbot.reactors.*
@@ -24,6 +20,7 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
             }
         },
         new OpDistributor(irc),
+        new InviteAndByeResponder(irc),
         new Debugger(irc),
     )
     jobs()

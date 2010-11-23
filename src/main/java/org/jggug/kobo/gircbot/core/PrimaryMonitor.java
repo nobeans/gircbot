@@ -25,40 +25,40 @@ public class PrimaryMonitor {
         String myNick = ircControl.getNick();
 
         List<String> joinedNicks = getJoinedNicks(channel);
-        LOG.debug(String.format("joinedNicks: %s", joinedNicks));
+        if (LOG.isDebugEnabled()) LOG.debug(String.format("joinedNicks: %s", joinedNicks));
         if (!joinedNicks.contains(myNick)) {
-            LOG.debug(String.format("This bot seems not to join yet.: %s in %s %s", myNick, channel, joinedNicks));
+            if (LOG.isDebugEnabled()) LOG.debug(String.format("This bot seems not to join yet.: %s in %s %s", myNick, channel, joinedNicks));
             return false;
         }
 
-        LOG.debug(String.format("orderedPrimaryNicks: %s", orderedPrimaryNicks));
+        if (LOG.isDebugEnabled()) LOG.debug(String.format("orderedPrimaryNicks: %s", orderedPrimaryNicks));
         if (!orderedPrimaryNicks.contains(myNick)) {
-            throw new IllegalStateException(String.format("Why isn't there this bot in orderedPrimaryNicks? : %s in %s %s", myNick, channel, orderedPrimaryNicks));
+            throw new IllegalStateException(String.format("Why isn't there this bot in orderedPrimaryNicks? : %s %s", myNick, orderedPrimaryNicks));
         }
 
-        List<String> workNicks = new ArrayList<String>(orderedPrimaryNicks);
-        workNicks.retainAll(joinedNicks);
-        LOG.debug(String.format("filtering orderedPrimaryNicks: %s -> %s", orderedPrimaryNicks, workNicks));
+        List<String> joinedPrimaryNicks = new ArrayList<String>(orderedPrimaryNicks);
+        joinedPrimaryNicks.retainAll(joinedNicks);
+        if (LOG.isDebugEnabled()) LOG.debug(String.format("joined orderedPrimaryNicks: %s -> %s", orderedPrimaryNicks, joinedPrimaryNicks));
 
         // when the first element is the own nick, this bot is primary.
-        int index = workNicks.indexOf(myNick);
+        int index = joinedPrimaryNicks.indexOf(myNick);
         boolean isPrimary = (index == 0);
-        LOG.debug(String.format("checking: %s in %s %s (primary:%s)", myNick, channel, workNicks, isPrimary));
+        if (LOG.isDebugEnabled()) LOG.debug(String.format("checking: %s in %s %s (primary:%s)", myNick, channel, joinedPrimaryNicks, isPrimary));
         if (isPrimary && !wasPrimary) {
             String message = MessageUtils.getMessage("core.GircBot.isPrimary.active");
             ircControl.sendMessage(channel, message);
-            LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
+            LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, joinedPrimaryNicks));
             wasPrimary = true;
-            return true;
         }
-        if (!isPrimary && wasPrimary) {
+        else if (!isPrimary && wasPrimary) {
             String message = MessageUtils.getMessage("core.GircBot.isPrimary.standby");
             ircControl.sendMessage(channel, message);
-            LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, workNicks));
+            LOG.info(String.format("%s: %s in %s %s", message, myNick, channel, joinedPrimaryNicks));
             wasPrimary = false;
-            return false;
         }
-        assert (isPrimary == wasPrimary) : "Status is not changed";
+        else {
+            assert (isPrimary == wasPrimary) : "Status is not changed";
+        }
         return isPrimary;
     }
 

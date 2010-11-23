@@ -70,7 +70,7 @@ public class PrimaryMonitorTest {
     }
 
     @Test
-    public void isPrimary_notExistingAnyone_toThrowException() throws Exception {
+    public void isPrimary_notExistingAnyone_toBeFalse() throws Exception {
         // Setup
         doReturn(Arrays.asList()).when(primaryMonitor).getJoinedNicks("#test");
         // Exercise
@@ -91,7 +91,7 @@ public class PrimaryMonitorTest {
             primaryMonitor.isPrimary("#test");
             fail();
         } catch (IllegalStateException e) {
-            assertEquals("Why isn't there this bot in orderedPrimaryNicks? : bot2 in #test []", e.getMessage());
+            assertEquals("Why isn't there this bot in orderedPrimaryNicks? : bot2 []", e.getMessage());
         }
     }
 

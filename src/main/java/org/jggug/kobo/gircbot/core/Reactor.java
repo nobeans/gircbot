@@ -208,4 +208,10 @@ public abstract class Reactor implements IrcEventListener {
     public void onUnknown(String line) {
     }
 
+    protected void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+        }
+    }
 }

@@ -16,5 +16,11 @@ public interface IrcControl {
 
     void op(String channel, String login);
 
+    void joinChannel(String channel);
+
+    void joinChannel(String channel, String key);
+
+    void partChannel(String channel);
+
 
 }
