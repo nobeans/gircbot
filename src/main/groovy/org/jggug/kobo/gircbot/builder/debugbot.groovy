@@ -1,6 +1,18 @@
+import org.jggug.kobo.gircbot.irclog.PostgreSqlDataSourceFactory;
+
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.*
+import org.jggug.kobo.gircbot.irclog.*
 import org.jggug.kobo.gircbot.reactors.*
+
+def dataSource = PostgreSqlDataSourceFactory.newInstance(
+    host: "localhost",
+    port: 5432,
+    database: "irclog",
+    user: "postgres",
+    password: "",
+)
+def dao = new IrclogViewerDao(dataSource)
 
 new GircBotBuilder(debug:true).config { IrcControl irc ->
     server {
@@ -22,6 +34,7 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
         new OpDistributor(irc),
         new InviteAndByeResponder(irc),
         new Debugger(irc),
+        new Logger(irc, new IrclogViewerLogAppender(dao:dao, defaultChannel:"#lounge"))
     )
     jobs()
 }.start()

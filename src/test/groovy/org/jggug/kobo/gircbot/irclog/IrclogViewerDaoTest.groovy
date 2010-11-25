@@ -7,17 +7,17 @@ public class IrclogViewerDaoTest {
 
     @Test
     public void testname() throws Exception {
-        IrclogViewerDao dao = new IrclogViewerDao()
+        IrclogViewerDao dao = new IrclogViewerDao(PostgreSqlDataSourceFactory.newInstance())
         
         def irclog = [channel:"#test1", nick:"nobeans", type:"PRIVMSG", message:"Hello!"]
         
         def sql = dao.createInsertSql(irclog)
-        dao.executeSql(sql)
+        assert dao.executeSql(sql) == 1
     }
 
     @Test
     public void getAll() throws Exception {
-        IrclogViewerDao dao = new IrclogViewerDao()
+        IrclogViewerDao dao = new IrclogViewerDao(PostgreSqlDataSourceFactory.newInstance())
         println dao.getAllActiveChannelNames()
     }
 }

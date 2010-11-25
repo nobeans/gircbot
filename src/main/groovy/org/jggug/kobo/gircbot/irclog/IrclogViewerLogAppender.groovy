@@ -9,20 +9,13 @@ class IrclogViewerLogAppender implements LogAppender {
     private static final Log LOG = LogFactory.getLog(IrclogViewerLogAppender.class)
 
     private IrclogViewerDao dao
-
-    IrclogViewerLogAppender(IrclogViewerDao dao) {
-        this.dao = dao
-    }
-
-    @Override
-    void append(String message) {
-    }
+    private String defaultChannel
 
     @Override
     void append(String type, String channel, String nick, String message) {
         def map = [
             type: type,
-            channel: channel,
+            channel: channel ?: defaultChannel,
             nick: nick,
             message: message,
         ]
