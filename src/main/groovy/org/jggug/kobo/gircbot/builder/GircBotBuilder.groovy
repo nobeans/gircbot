@@ -39,10 +39,20 @@ class GircBotBuilder {
                     namePath.pop()
                     return clos
                 }
-                debugLog "Parameter: $name($args)"
-                config[paramName] = args
+                addConfig(paramName, args)
                 namePath.pop()
             }
+        }
+    }
+
+    def addConfig(name, args) {
+        debugLog "Parameter: $name = $args (${args.class.name})"
+        if (!args) return
+        if (args.size() == 1) {
+            config[name] = args[0]
+        }
+        else if (args.size() > 1) {
+            config[name] = args
         }
     }
 
@@ -55,9 +65,9 @@ class GircBotBuilder {
         config["reactors"].each { reactor ->
             bot.addIrcEventListener(reactor)
         }
-        bot.name = config["nick.name"][0]
+        bot.name = config["nick.name"]
         bot.setVerbose(debug)
-        bot.connect(config["server.host"][0], config["server.port"][0])
+        bot.connect(config["server.host"], config["server.port"])
         config["channel.autoJoinTo"].each { channel ->
             bot.joinChannel(channel)
         }

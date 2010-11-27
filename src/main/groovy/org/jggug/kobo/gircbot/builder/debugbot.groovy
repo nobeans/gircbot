@@ -1,5 +1,3 @@
-import org.jggug.kobo.gircbot.irclog.PostgreSqlDataSourceFactory;
-
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.*
 import org.jggug.kobo.gircbot.irclog.*
@@ -13,6 +11,7 @@ def dataSource = PostgreSqlDataSourceFactory.newInstance(
     password: "",
 )
 def dao = new IrclogViewerDao(dataSource)
+println dao.allActiveChannelNames
 
 new GircBotBuilder(debug:true).config { IrcControl irc ->
     server {
@@ -23,7 +22,7 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
         name "cobot_"
         primaryOrder "cobot", "cobot_", "cobot__"
     }
-    channel { autoJoinTo "#test", "#lounge" }
+    channel { autoJoinTo dao.allActiveChannelNames }
     reactors (
         new Reactor(irc) {
             void onMessage(String channel, String sender, String login, String hostname, String message) {
