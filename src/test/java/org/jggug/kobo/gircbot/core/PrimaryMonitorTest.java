@@ -120,15 +120,29 @@ public class PrimaryMonitorTest {
     }
 
     @Test
-    public void isPrimary_notPrimaryToPrimary() throws Exception {
+    public void isPrimary_notPrimaryToPrimary_atFirstPrimaryMonitorIsNull() throws Exception {
         // Setup
         doReturn(Arrays.asList("bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
-        primaryMonitor.wasPrimary = false;
+        primaryMonitor.primaryStatus.remove("#test");
         // Exercise
         boolean actual = primaryMonitor.isPrimary("#test");
         // Verify
         assertTrue(actual);
-        assertTrue(primaryMonitor.wasPrimary);
+        assertTrue(primaryMonitor.primaryStatus.get("#test"));
+        verify(primaryMonitor).getJoinedNicks("#test");
+        verify(ircControl).sendMessage(eq("#test"), anyString());
+    }
+
+    @Test
+    public void isPrimary_notPrimaryToPrimary() throws Exception {
+        // Setup
+        doReturn(Arrays.asList("bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
+        primaryMonitor.primaryStatus.put("#test", false);
+        // Exercise
+        boolean actual = primaryMonitor.isPrimary("#test");
+        // Verify
+        assertTrue(actual);
+        assertTrue(primaryMonitor.primaryStatus.get("#test"));
         verify(primaryMonitor).getJoinedNicks("#test");
         verify(ircControl).sendMessage(eq("#test"), anyString());
     }
@@ -137,12 +151,12 @@ public class PrimaryMonitorTest {
     public void isPrimary_primaryToNotPrimary() throws Exception {
         // Setup
         doReturn(Arrays.asList("bot1", "bot2", "bot3")).when(primaryMonitor).getJoinedNicks("#test");
-        primaryMonitor.wasPrimary = true;
+        primaryMonitor.primaryStatus.put("#test", true);
         // Exercise
         boolean actual = primaryMonitor.isPrimary("#test");
         // Verify
         assertFalse(actual);
-        assertFalse(primaryMonitor.wasPrimary);
+        assertFalse(primaryMonitor.primaryStatus.get("#test"));
         verify(primaryMonitor).getJoinedNicks("#test");
         verify(ircControl).sendMessage(eq("#test"), anyString());
     }
