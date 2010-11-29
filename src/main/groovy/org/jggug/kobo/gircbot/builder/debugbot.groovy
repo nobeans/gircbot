@@ -24,16 +24,11 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
     }
     channel { autoJoinTo dao.allActiveChannelNames }
     reactors (
-        new Reactor(irc) {
-            void onMessage(String channel, String sender, String login, String hostname, String message) {
-                irc.sendMessage "#test", "1> $channel $message"
-                irc.sendMessage "ynak", "3> $channel $message"
-            }
-        },
+        new Logger(irc, new IrclogViewerLogAppender(dao:dao, defaultChannel:"#lounge")),
+        new Dictionary(irc, new File("${System.properties['user.home']}/.gircbot-dict")),
         new OpDistributor(irc),
         new InviteAndByeResponder(irc),
         new Debugger(irc),
-        new Logger(irc, new IrclogViewerLogAppender(dao:dao, defaultChannel:"#lounge"))
     )
     jobs()
 }.start()
