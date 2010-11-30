@@ -6,6 +6,7 @@ import org.jggug.kobo.gircbot.core.*
 class GircBotBuilder {
 
     GircBot bot = new GircBot()
+    TimeMonitor timeMonitor = new TimeMonitor()
     boolean debug = false
     Map config = [:]
 
@@ -59,18 +60,34 @@ class GircBotBuilder {
     void start() {
         debugLog "Starting bot..."
         config.each { name, args ->
-            debugLog "Config: $name = $args"
+        debugLog "Config: $name = $args"
         }
-        bot.primaryMonitor = new PrimaryMonitor("#test", config["nick.primaryOrder"] as List, bot)
+
+        // Setup bot
+        def primaryMonitor = new PrimaryMonitor("#test", config["nick.primaryOrder"] as List, bot)
+        bot.primaryMonitor = primaryMonitor
+        bot.name = config["nick.name"]
+        bot.setVerbose(debug)
         config["reactors"].each { reactor ->
             bot.addIrcEventListener(reactor)
         }
-        bot.name = config["nick.name"]
-        bot.setVerbose(debug)
+        debugLog "Bot has the following reactors: ${config['reactors']}"
+
+        // Connect to server
         bot.connect(config["server.host"], config["server.port"])
         config["channel.autoJoinTo"].each { channel ->
             bot.joinChannel(channel)
         }
+        debugLog "Bot is joined to channels: ${config['channel.autoJoinTo']}"
+
+        // Setup timer
+        timeMonitor.primaryMonitor = primaryMonitor
+        config["jobs"].each { job ->
+            timeMonitor.addTimeEventListener(job)
+        }
+        timeMonitor.start()
+        debugLog "Timer jobs are begun since now: ${config['jobs']}"
+
         debugLog "Now bot is running as ${bot.name}."
     }
 

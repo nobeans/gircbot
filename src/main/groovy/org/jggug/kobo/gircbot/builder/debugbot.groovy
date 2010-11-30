@@ -1,7 +1,9 @@
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.*
 import org.jggug.kobo.gircbot.irclog.*
+import org.jggug.kobo.gircbot.jobs.Reminder;
 import org.jggug.kobo.gircbot.reactors.*
+import com.sun.org.apache.regexp.internal.RE;
 
 def dataSource = PostgreSqlDataSourceFactory.newInstance(
     host: "localhost",
@@ -11,7 +13,6 @@ def dataSource = PostgreSqlDataSourceFactory.newInstance(
     password: "",
 )
 def dao = new IrclogViewerDao(dataSource)
-println dao.allActiveChannelNames
 
 new GircBotBuilder(debug:true).config { IrcControl irc ->
     server {
@@ -30,5 +31,7 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
         new InviteAndByeResponder(irc),
         new Debugger(irc),
     )
-    jobs()
+    jobs (
+        new Reminder(irc),
+    )
 }.start()
