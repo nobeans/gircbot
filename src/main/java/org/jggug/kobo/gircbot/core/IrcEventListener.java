@@ -32,8 +32,6 @@ public interface IrcEventListener {
 
     void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason);
 
-    void onTopic(String channel, String topic);
-
     void onTopic(String channel, String topic, String setBy, long date, boolean changed);
 
     void onChannelInfo(String channel, int userCount, String topic);
@@ -87,10 +85,6 @@ public interface IrcEventListener {
     void onRemoveSecret(String channel, String sourceNick, String sourceLogin, String sourceHostname);
 
     void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String channel);
-
-    void onDccSendRequest(String sourceNick, String sourceLogin, String sourceHostname, String filename, long address, int port, int size);
-
-    void onDccChatRequest(String sourceNick, String sourceLogin, String sourceHostname, long address, int port);
 
     void onIncomingFileTransfer(DccFileTransfer transfer);
 

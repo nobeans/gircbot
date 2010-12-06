@@ -65,10 +65,6 @@ public abstract class Reactor implements IrcEventListener {
     }
 
     @Override
-    public void onTopic(String channel, String topic) {
-    }
-
-    @Override
     public void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
     }
 
@@ -174,14 +170,6 @@ public abstract class Reactor implements IrcEventListener {
 
     @Override
     public void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String channel) {
-    }
-
-    @Override
-    public void onDccSendRequest(String sourceNick, String sourceLogin, String sourceHostname, String filename, long address, int port, int size) {
-    }
-
-    @Override
-    public void onDccChatRequest(String sourceNick, String sourceLogin, String sourceHostname, long address, int port) {
     }
 
     @Override

@@ -30,7 +30,7 @@ dependencies {
     testCompile 'org.mockito:mockito-all:1.8.5'
     compile 'postgresql:postgresql:8.4-702.jdbc3'
     compile 'pircbot:pircbot:1.4.2'
-    runtime 'commons-logging:commons-logging:1.1.1'
+    compile 'commons-logging:commons-logging:1.1.1'
     runtime 'log4j:log4j:1.2.9'
 }
 
@@ -50,17 +50,36 @@ compileTestGroovy {
     options.encoding = defaultEncoding
 }
 
-//uploadArchives {
-//    repositories.mavenDeployer {
-//        // If you want to deploy it, set an entry which has a key of 'kobo.maven.dir' at System properties.
-//        // ex) $HOME/.gradle/gradle.properties: systemProp.kobo.maven.dirs=$HOME/myrepos/maven2
-//        repository url: System.properties['kobo.maven.dir']
-//    }
-//}
-//
-//test.doLast {
-//    if (Boolean.valueOf(System.properties["showReport"])) {
-//        'open build/reports/tests/index.html'.execute()
-//    }
-//}
+uploadArchives {
+    repositories.mavenDeployer {
+        //
+        // If you want to deploy it, set an entry which has a key of 'mavenDeployRepo'
+        // e.g.) In $HOME/.gradle/gradle.properties:
+        //     mavenDeployRepo  = file://localhost/<YOUR_MAVEN_REPO_FULL_PATH>
+        //
+        // If you want to choose some repo, set some entries which have keys started with 'mavenDeployRepo.'.
+        // e.g.) In $HOME/.gradle/gradle.properties:
+        //     mavenDeployRepo.release  = file://localhost/<YOUR_MAVEN_REPO_RELEASE_FULL_PATH>
+        //     mavenDeployRepo.snapshot = file://localhost/<YOUR_MAVEN_REPO_SNAPSHOT_FULL_PATH>
+        // And you execute gradle in command line:
+        // e.g.)
+        //     $ gradle uploadArchives -Dmaven.deploy.repo=snapshot
+        //
+        def mavenDeployRepoId = System.properties["maven.deploy.repo"]
+        if (mavenDeployRepoId) {
+            repository url: getProperty("mavenDeployRepo.${mavenDeployRepoId}")
+        } else {
+            repository url: mavenDeployRepo
+        }
 
+        // License
+        pom.project {
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+        }
+    }
+}

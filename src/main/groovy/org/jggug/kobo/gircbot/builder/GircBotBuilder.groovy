@@ -44,9 +44,18 @@ class GircBotBuilder {
     void start() {
         debugLog "Starting bot..."
         config.each { name, args ->
-            println "bot.$name = $args"
+            debugLog "Config: $name = $args"
         }
-        debugLog "Running bot"
+        config["reactors"].each { reactor ->
+            bot.addIrcEventListener(reactor)
+        }
+        bot.name = config["nick.name"][0]
+        bot.setVerbose(debug)
+        bot.connect(config["server.host"][0], config["server.port"][0])
+        config["channel.autoJoinTo"].each { channel ->
+            bot.joinChannel(channel)
+        }
+        debugLog "Now bot is running as ${bot.name}."
     }
     
     void debugLog(message) {

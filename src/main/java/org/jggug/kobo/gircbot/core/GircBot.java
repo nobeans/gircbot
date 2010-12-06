@@ -27,12 +27,10 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
 
     @Override
     public void onConnect() {
-        if (!primaryChecker.isPrimaryGlobally()) {
-            return;
-        }
         for (IrcEventListener listener : listeners) {
             listener.onConnect();
         }
+        super.onConnect();
     }
 
     @Override
@@ -40,6 +38,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onDisconnect();
         }
+        super.onDisconnect();
     }
 
     @Override
@@ -47,6 +46,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onServerResponse(code, response);
         }
+        super.onServerResponse(code, response);
     }
 
     @Override
@@ -54,6 +54,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onUserList(channel, users);
         }
+        super.onUserList(channel, users);
     }
 
     @Override
@@ -61,13 +62,16 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onMessage(channel, sender, login, hostname, message);
         }
+        super.onMessage(channel, sender, login, hostname, message);
     }
 
     @Override
     public void onPrivateMessage(String sender, String login, String hostname, String message) {
         for (IrcEventListener listener : listeners) {
+            System.out.println(listener);
             listener.onPrivateMessage(sender, login, hostname, message);
         }
+        super.onPrivateMessage(sender, login, hostname, message);
     }
 
     @Override
@@ -75,6 +79,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onAction(sender, login, hostname, target, action);
         }
+        super.onAction(sender, login, hostname, target, action);
     }
 
     @Override
@@ -82,6 +87,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onNotice(sourceNick, sourceLogin, sourceHostname, target, notice);
         }
+        super.onNotice(sourceNick, sourceLogin, sourceHostname, target, notice);
     }
 
     @Override
@@ -89,6 +95,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onJoin(channel, sender, login, hostname);
         }
+        super.onJoin(channel, sender, login, hostname);
     }
 
     @Override
@@ -96,6 +103,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onPart(channel, sender, login, hostname);
         }
+        super.onPart(channel, sender, login, hostname);
     }
 
     @Override
@@ -103,6 +111,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onNickChange(oldNick, login, hostname, newNick);
         }
+        super.onNickChange(oldNick, login, hostname, newNick);
     }
 
     @Override
@@ -110,6 +119,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onKick(channel, kickerNick, kickerLogin, kickerHostname, recipientNick, reason);
         }
+        super.onKick(channel, kickerNick, kickerLogin, kickerHostname, recipientNick, reason);
     }
 
     @Override
@@ -117,13 +127,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onQuit(sourceNick, sourceLogin, sourceHostname, reason);
         }
-    }
-
-    @Override
-    public void onTopic(String channel, String topic) {
-        for (IrcEventListener listener : listeners) {
-            listener.onTopic(channel, topic);
-        }
+        super.onQuit(sourceNick, sourceLogin, sourceHostname, reason);
     }
 
     @Override
@@ -131,6 +135,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onTopic(channel, topic, setBy, date, changed);
         }
+        super.onTopic(channel, topic, setBy, date, changed);
     }
 
     @Override
@@ -138,6 +143,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onChannelInfo(channel, userCount, topic);
         }
+        super.onChannelInfo(channel, userCount, topic);
     }
 
     @Override
@@ -145,6 +151,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onMode(channel, sourceNick, sourceLogin, sourceHostname, mode);
         }
+        super.onMode(channel, sourceNick, sourceLogin, sourceHostname, mode);
     }
 
     @Override
@@ -152,6 +159,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onUserMode(targetNick, sourceNick, sourceLogin, sourceHostname, mode);
         }
+        super.onUserMode(targetNick, sourceNick, sourceLogin, sourceHostname, mode);
     }
 
     @Override
@@ -159,6 +167,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onOp(channel, sourceNick, sourceLogin, sourceHostname, recipient);
         }
+        super.onOp(channel, sourceNick, sourceLogin, sourceHostname, recipient);
     }
 
     @Override
@@ -166,6 +175,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onDeop(channel, sourceNick, sourceLogin, sourceHostname, recipient);
         }
+        super.onDeop(channel, sourceNick, sourceLogin, sourceHostname, recipient);
     }
 
     @Override
@@ -173,6 +183,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onVoice(channel, sourceNick, sourceLogin, sourceHostname, recipient);
         }
+        super.onVoice(channel, sourceNick, sourceLogin, sourceHostname, recipient);
     }
 
     @Override
@@ -180,6 +191,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onDeVoice(channel, sourceNick, sourceLogin, sourceHostname, recipient);
         }
+        super.onDeVoice(channel, sourceNick, sourceLogin, sourceHostname, recipient);
     }
 
     @Override
@@ -187,6 +199,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetChannelKey(channel, sourceNick, sourceLogin, sourceHostname, key);
         }
+        super.onSetChannelKey(channel, sourceNick, sourceLogin, sourceHostname, key);
     }
 
     @Override
@@ -194,6 +207,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveChannelKey(channel, sourceNick, sourceLogin, sourceHostname, key);
         }
+        super.onRemoveChannelKey(channel, sourceNick, sourceLogin, sourceHostname, key);
     }
 
     @Override
@@ -201,6 +215,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetChannelLimit(channel, sourceNick, sourceLogin, sourceHostname, limit);
         }
+        super.onSetChannelLimit(channel, sourceNick, sourceLogin, sourceHostname, limit);
     }
 
     @Override
@@ -208,6 +223,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveChannelLimit(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemoveChannelLimit(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -215,6 +231,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetChannelBan(channel, sourceNick, sourceLogin, sourceHostname, hostmask);
         }
+        super.onSetChannelBan(channel, sourceNick, sourceLogin, sourceHostname, hostmask);
     }
 
     @Override
@@ -222,6 +239,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveChannelBan(channel, sourceNick, sourceLogin, sourceHostname, hostmask);
         }
+        super.onRemoveChannelBan(channel, sourceNick, sourceLogin, sourceHostname, hostmask);
     }
 
     @Override
@@ -229,6 +247,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetTopicProtection(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onSetTopicProtection(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -236,6 +255,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveTopicProtection(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemoveTopicProtection(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -243,6 +263,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetNoExternalMessages(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onSetNoExternalMessages(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -250,6 +271,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveNoExternalMessages(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemoveNoExternalMessages(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -257,6 +279,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetInviteOnly(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onSetInviteOnly(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -264,6 +287,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveInviteOnly(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemoveInviteOnly(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -271,6 +295,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetModerated(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onSetModerated(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -278,6 +303,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveModerated(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemoveModerated(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -285,6 +311,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetPrivate(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onSetPrivate(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -292,6 +319,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemovePrivate(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemovePrivate(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -299,6 +327,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onSetSecret(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onSetSecret(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -306,6 +335,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onRemoveSecret(channel, sourceNick, sourceLogin, sourceHostname);
         }
+        super.onRemoveSecret(channel, sourceNick, sourceLogin, sourceHostname);
     }
 
     @Override
@@ -313,20 +343,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onInvite(targetNick, sourceNick, sourceLogin, sourceHostname, channel);
         }
-    }
-
-    @Override
-    public void onDccSendRequest(String sourceNick, String sourceLogin, String sourceHostname, String filename, long address, int port, int size) {
-        for (IrcEventListener listener : listeners) {
-            listener.onDccSendRequest(sourceNick, sourceLogin, sourceHostname, filename, address, port, size);
-        }
-    }
-
-    @Override
-    public void onDccChatRequest(String sourceNick, String sourceLogin, String sourceHostname, long address, int port) {
-        for (IrcEventListener listener : listeners) {
-            listener.onDccChatRequest(sourceNick, sourceLogin, sourceHostname, address, port);
-        }
+        super.onInvite(targetNick, sourceNick, sourceLogin, sourceHostname, channel);
     }
 
     @Override
@@ -334,6 +351,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onIncomingFileTransfer(transfer);
         }
+        super.onIncomingFileTransfer(transfer);
     }
 
     @Override
@@ -341,6 +359,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onFileTransferFinished(transfer, e);
         }
+        super.onFileTransferFinished(transfer, e);
     }
 
     @Override
@@ -348,6 +367,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onIncomingChatRequest(chat);
         }
+        super.onIncomingChatRequest(chat);
     }
 
     @Override
@@ -355,6 +375,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onVersion(sourceNick, sourceLogin, sourceHostname, target);
         }
+        super.onVersion(sourceNick, sourceLogin, sourceHostname, target);
     }
 
     @Override
@@ -362,6 +383,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onPing(sourceNick, sourceLogin, sourceHostname, target, pingValue);
         }
+        super.onPing(sourceNick, sourceLogin, sourceHostname, target, pingValue);
     }
 
     @Override
@@ -369,6 +391,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onServerPing(response);
         }
+        super.onServerPing(response);
     }
 
     @Override
@@ -376,6 +399,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onTime(sourceNick, sourceLogin, sourceHostname, target);
         }
+        super.onTime(sourceNick, sourceLogin, sourceHostname, target);
     }
 
     @Override
@@ -383,6 +407,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onFinger(sourceNick, sourceLogin, sourceHostname, target);
         }
+        super.onFinger(sourceNick, sourceLogin, sourceHostname, target);
     }
 
     @Override
@@ -390,6 +415,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
         for (IrcEventListener listener : listeners) {
             listener.onUnknown(line);
         }
+        super.onUnknown(line);
     }
 
     // ----------------------------------------
