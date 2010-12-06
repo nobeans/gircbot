@@ -1,6 +1,5 @@
 package org.jggug.kobo.gircbot.builder
 
-import java.util.List;
 import org.jggug.kobo.gircbot.core.*
 
 class GircBotBuilder {
@@ -80,13 +79,13 @@ class GircBotBuilder {
         }
         debugLog "Bot is joined to channels: ${config['channel.autoJoinTo']}"
 
-        // Setup timer
+        // Setup timer jobs
         timeMonitor.primaryMonitor = primaryMonitor
         config["jobs"].each { job ->
             timeMonitor.addTimeEventListener(job)
         }
         timeMonitor.start()
-        debugLog "Timer jobs are begun since now: ${config['jobs']}"
+        debugLog "Timer jobs are started: ${config['jobs']}"
 
         debugLog "Now bot is running as ${bot.name}."
     }
