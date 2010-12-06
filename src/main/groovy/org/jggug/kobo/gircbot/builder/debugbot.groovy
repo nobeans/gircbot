@@ -1,9 +1,8 @@
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.*
 import org.jggug.kobo.gircbot.irclog.*
-import org.jggug.kobo.gircbot.jobs.Reminder;
 import org.jggug.kobo.gircbot.reactors.*
-import com.sun.org.apache.regexp.internal.RE;
+import org.jggug.kobo.gircbot.jobs.*
 
 def dataSource = PostgreSqlDataSourceFactory.newInstance(
     host: "localhost",
