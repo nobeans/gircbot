@@ -25,8 +25,10 @@ public class Dictionary extends Reactor {
     private Properties loadDictionary() {
         // dyanmically loading in every time
         def dictionary = new Properties()
-        dictionaryFile.withReader(charset) { reader ->
-            dictionary.load(reader)
+        if (dictionaryFile.isFile()) {
+            dictionaryFile.withReader(charset) { reader ->
+                dictionary.load(reader)
+            }
         }
         return dictionary
     }

@@ -25,12 +25,12 @@ new GircBotBuilder(debug:true).config { IrcControl irc ->
     channel { autoJoinTo dao.allActiveChannelNames }
     reactors (
         new Logger(irc, new IrclogViewerLogAppender(dao:dao, defaultChannel:"#lounge")),
-        new Dictionary(irc, new File("${System.properties['user.home']}/.gircbot-dict")),
+        new Dictionary(irc, new File("${System.properties['user.home']}/.gircbot-dictionary")),
         new OpDistributor(irc),
         new InviteAndByeResponder(irc),
         new Debugger(irc),
     )
     jobs (
-        new Reminder(irc),
+        new Reminder(irc, new File("${System.properties['user.home']}/.gircbot-reminder")),
     )
 }.start()
