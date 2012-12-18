@@ -20,35 +20,22 @@ apply plugin:'eclipse'
 
 repositories {
     mavenCentral()
-    mavenRepo urls: [
-        "http://repository.codehaus.org/",
-    ]
+    //mavenRepo url: "http://repository.codehaus.org/"
 }
+
 dependencies {
-    groovy 'org.codehaus.groovy:groovy:1.7.5'
-    testCompile 'junit:junit:4.8.2'
-    testCompile 'org.mockito:mockito-all:1.8.5'
+    groovy 'org.codehaus.groovy:groovy-all:2.0.5'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-all:1.9.0'
     compile 'postgresql:postgresql:8.4-702.jdbc3'
-    compile 'pircbot:pircbot:1.4.2'
+    compile 'pircbot:pircbot:1.5.0'
     compile 'commons-logging:commons-logging:1.1.1'
-    runtime 'log4j:log4j:1.2.9'
+    runtime 'log4j:log4j:1.2.17'
 }
 
 def defaultEncoding = 'UTF-8'
-compileJava {
-    options.encoding = defaultEncoding
-}
-compileTestJava {
-    options.encoding = defaultEncoding
-}
-compileGroovy {
-    groovyOptions.encoding = defaultEncoding
-    options.encoding = defaultEncoding
-}
-compileTestGroovy {
-    groovyOptions.encoding = defaultEncoding
-    options.encoding = defaultEncoding
-}
+tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
+tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding }
 
 uploadArchives {
     repositories.mavenDeployer {
