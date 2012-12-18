@@ -20,7 +20,6 @@ apply plugin:'idea'
 
 repositories {
     mavenCentral()
-    //mavenRepo url: "http://repository.codehaus.org/"
 }
 
 dependencies {
@@ -39,25 +38,8 @@ tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding
 
 uploadArchives {
     repositories.mavenDeployer {
-        //
-        // If you want to deploy it, set an entry which has a key of 'mavenDeployRepo'
-        // e.g.) In $HOME/.gradle/gradle.properties:
-        //     mavenDeployRepo  = file://localhost/<YOUR_MAVEN_REPO_FULL_PATH>
-        //
-        // If you want to choose some repo, set some entries which have keys started with 'mavenDeployRepo.'.
-        // e.g.) In $HOME/.gradle/gradle.properties:
-        //     mavenDeployRepo.release  = file://localhost/<YOUR_MAVEN_REPO_RELEASE_FULL_PATH>
-        //     mavenDeployRepo.snapshot = file://localhost/<YOUR_MAVEN_REPO_SNAPSHOT_FULL_PATH>
-        // And you execute gradle in command line:
-        // e.g.)
-        //     $ gradle uploadArchives -Dmaven.deploy.repo=snapshot
-        //
-        def mavenDeployRepoId = System.properties["maven.deploy.repo"]
-        if (mavenDeployRepoId) {
-            repository url: getProperty("mavenDeployRepo.${mavenDeployRepoId}")
-        } else {
-            repository url: mavenDeployRepo
-        }
+        def type = (Boolean.valueOf(System.properties["release"])) ? "release" : "snapshot"
+        repository url: "dav:https://repository-kobo.forge.cloudbees.com/${type}/"
 
         // License
         pom.project {
