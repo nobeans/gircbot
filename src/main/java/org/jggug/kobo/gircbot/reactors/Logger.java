@@ -1,14 +1,12 @@
 package org.jggug.kobo.gircbot.reactors;
 
-import org.jggug.kobo.gircbot.core.IrcControl;
 import org.jggug.kobo.gircbot.core.Reactor;
 
 public class Logger extends Reactor {
 
     private LogAppender appender;
 
-    public Logger(IrcControl control, LogAppender appender) {
-        super(control);
+    public Logger(LogAppender appender) {
         this.appender = appender;
     }
 

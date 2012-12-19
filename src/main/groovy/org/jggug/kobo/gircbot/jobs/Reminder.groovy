@@ -1,6 +1,5 @@
 package org.jggug.kobo.gircbot.jobs
 
-import org.jggug.kobo.gircbot.core.IrcControl
 import org.jggug.kobo.gircbot.core.Job
 
 public class Reminder extends Job {
@@ -8,8 +7,7 @@ public class Reminder extends Job {
     File dataFile
     String charset
 
-    public Reminder(IrcControl ircControl, File dataFile, String charset = "UTF-8") {
-        super(ircControl)
+    public Reminder(File dataFile, String charset = "UTF-8") {
         this.dataFile = dataFile
         this.charset = charset
     }
@@ -18,7 +16,7 @@ public class Reminder extends Job {
         // dyanmically loading in every time
         if (!dataFile.isFile()) {
             return [:]
-        } 
+        }
         def data = new GroovyShell().evaluate(dataFile.text)
         return data
     }

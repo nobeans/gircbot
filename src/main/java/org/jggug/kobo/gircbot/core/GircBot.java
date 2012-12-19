@@ -15,7 +15,7 @@ public class GircBot extends PircBot implements IrcControl, IrcEventSource {
 
     private final List<IrcEventListener> listeners = new ArrayList<IrcEventListener>();
 
-    void addIrcEventListener(IrcEventListener listener) {
+    public void addIrcEventListener(IrcEventListener listener) {
         listeners.add(listener);
     }
 

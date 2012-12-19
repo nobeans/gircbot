@@ -12,10 +12,6 @@ public class Debugger extends Reactor {
 
     private static final Log LOG = LogFactory.getLog(Debugger.class);
 
-    public Debugger(IrcControl control) {
-        super(control);
-    }
-
     @Override
     public void onConnect() {
         LOG.debug("onConnect()");

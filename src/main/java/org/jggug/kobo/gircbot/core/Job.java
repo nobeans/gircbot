@@ -6,7 +6,7 @@ public class Job implements TimeEventListener {
 
     protected IrcControl ircControl;
 
-    protected Job(IrcControl ircControl) {
+    public void setIrcControl(IrcControl ircControl) {
         this.ircControl = ircControl;
     }
 

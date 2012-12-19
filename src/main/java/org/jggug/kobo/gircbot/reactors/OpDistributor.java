@@ -11,10 +11,6 @@ public class OpDistributor extends Reactor {
 
     private static final Log LOG = LogFactory.getLog(OpDistributor.class);
 
-    public OpDistributor(IrcControl ircControl) {
-        super(ircControl);
-    }
-
     @Override
     public void onJoin(String channel, String sender, String login, String hostname) {
         User user = ircControl.getUser(channel);

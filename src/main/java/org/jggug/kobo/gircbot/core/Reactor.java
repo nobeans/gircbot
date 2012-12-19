@@ -6,9 +6,9 @@ import org.jibble.pircbot.User;
 
 public abstract class Reactor implements IrcEventListener {
 
-    protected final IrcControl ircControl;
+    protected IrcControl ircControl;
 
-    protected Reactor(IrcControl ircControl) {
+    public void setIrcControl(IrcControl ircControl) {
         this.ircControl = ircControl;
     }
 

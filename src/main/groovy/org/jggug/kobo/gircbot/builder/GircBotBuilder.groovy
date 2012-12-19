@@ -51,7 +51,7 @@ class GircBotBuilder {
         }
     }
 
-    private addConfig(name, args) {
+    private addConfig(String name, args) {
         log.debug "Parameter: $name = $args (${args.class.name})"
         if (!args) return
         if (args.size() == 1) {
@@ -69,21 +69,23 @@ class GircBotBuilder {
 
         // Setup bot
         bot.name = config["nick.name"]
-        bot.setVerbose(Boolean.valueOf(System.properties["debug.gircbot"]))
-        config["reactors"].each { reactor ->
+        bot.verbose = Boolean.valueOf(System.properties["debug.gircbot"])
+        config["reactors"].each { Reactor reactor ->
+            reactor.ircControl = bot
             bot.addIrcEventListener(reactor)
         }
         log.debug "Bot has the following reactors: ${config['reactors']}"
 
         // Connect to server
         bot.connect(config["server.host"], config["server.port"])
-        config["channel.autoJoinTo"].each { channel ->
-            bot.joinChannel(channel)
+        config["channel.autoJoinTo"].each { String channelName ->
+            bot.joinChannel(channelName)
         }
         log.debug "Bot is joined to channels: ${config['channel.autoJoinTo']}"
 
         // Setup timer jobs
-        config["jobs"].each { job ->
+        config["jobs"].each { Job job ->
+            job.ircControl = bot
             timeMonitor.addTimeEventListener(job)
         }
         timeMonitor.start()

@@ -7,8 +7,7 @@ public class Dictionary extends Reactor {
     File dictionaryFile
     String charset
 
-    public Dictionary(IrcControl ircControl, File dictionaryFile, String charset = "UTF-8") {
-        super(ircControl)
+    public Dictionary(File dictionaryFile, String charset = "UTF-8") {
         this.dictionaryFile = dictionaryFile
         this.charset = charset
     }
