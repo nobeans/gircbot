@@ -69,7 +69,7 @@ class GircBotBuilder {
 
         // Setup bot
         bot.name = config["nick"]
-        bot.verbose = Boolean.valueOf(System.properties["debug.gircbot"])
+        bot.verbose = Boolean.valueOf(System.properties["gircbot.debug"])
         config["reactors"].each { Reactor reactor ->
             reactor.ircControl = bot
             bot.addIrcEventListener(reactor)
