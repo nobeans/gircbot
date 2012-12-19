@@ -1,12 +1,13 @@
 package org.jggug.kobo.gircbot.builder
 
+import groovy.util.logging.Commons
 import org.jggug.kobo.gircbot.core.*
 
+@Commons
 class GircBotBuilder {
 
     GircBot bot = new GircBot()
     TimeMonitor timeMonitor = new TimeMonitor()
-    boolean debug = false
     Map config = [:]
 
     GircBotBuilder() {
@@ -20,19 +21,19 @@ class GircBotBuilder {
     }
 
     def expandClosure(Closure c) {
+        c.delegate = c
         c.metaClass {
             def namePath = []
             methodMissing { String name, args ->
-                debugLog "Method: $name($args)"
+                log.debug  "Method: $name($args)"
                 namePath << name
                 def paramName = namePath.join(".")
 
-                def closureArgs = args.findAll{ it.class in Closure }
+                def closureArgs = args.findAll { it.class in Closure }
                 if (closureArgs.size() > 1) {
                     throw new IllegalArgumentException("Allowed only one Closure argument per one method")
-                }
-                else if (closureArgs.size() == 1) {
-                    debugLog "Found closure argument: $closureArgs in $paramName"
+                } else if (closureArgs.size() == 1) {
+                    log.debug "Found closure argument: $closureArgs in $paramName"
                     def clos = closureArgs[0]
                     expandClosure(clos)
                     clos.call(bot)
@@ -46,38 +47,37 @@ class GircBotBuilder {
     }
 
     def addConfig(name, args) {
-        debugLog "Parameter: $name = $args (${args.class.name})"
+        log.debug "Parameter: $name = $args (${args.class.name})"
         if (!args) return
         if (args.size() == 1) {
             config[name] = args[0]
-        }
-        else if (args.size() > 1) {
+        } else if (args.size() > 1) {
             config[name] = args
         }
     }
 
     void start() {
-        debugLog "Starting bot..."
+        log.debug "Starting bot..."
         config.each { name, args ->
-        debugLog "Config: $name = $args"
+            log.debug "Config: $name = $args"
         }
 
         // Setup bot
         def primaryMonitor = new PrimaryMonitor("#test", config["nick.primaryOrder"] as List, bot)
         bot.primaryMonitor = primaryMonitor
         bot.name = config["nick.name"]
-        bot.setVerbose(debug)
+        bot.setVerbose(Boolean.valueOf(System.properties["debug.gircbot"]))
         config["reactors"].each { reactor ->
             bot.addIrcEventListener(reactor)
         }
-        debugLog "Bot has the following reactors: ${config['reactors']}"
+        log.debug "Bot has the following reactors: ${config['reactors']}"
 
         // Connect to server
         bot.connect(config["server.host"], config["server.port"])
         config["channel.autoJoinTo"].each { channel ->
             bot.joinChannel(channel)
         }
-        debugLog "Bot is joined to channels: ${config['channel.autoJoinTo']}"
+        log.debug "Bot is joined to channels: ${config['channel.autoJoinTo']}"
 
         // Setup timer jobs
         timeMonitor.primaryMonitor = primaryMonitor
@@ -85,13 +85,9 @@ class GircBotBuilder {
             timeMonitor.addTimeEventListener(job)
         }
         timeMonitor.start()
-        debugLog "Timer jobs are started: ${config['jobs']}"
+        log.debug "Timer jobs are started: ${config['jobs']}"
 
-        debugLog "Now bot is running as ${bot.name}."
-    }
-
-    void debugLog(message) {
-        if (debug) println "[DEBUG] $message"
+        log.debug "Now bot is running as ${bot.name}."
     }
 }
 
