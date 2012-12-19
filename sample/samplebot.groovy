@@ -5,7 +5,7 @@ import org.jggug.kobo.gircbot.core.*
 import org.jggug.kobo.gircbot.reactors.*
 import org.jggug.kobo.gircbot.jobs.*
 
-new GircBotBuilder(debug:true).config { IrcControl irc ->
+new GircBotBuilder().config { IrcControl irc ->
     server {
         host "silver"
         port 6667
