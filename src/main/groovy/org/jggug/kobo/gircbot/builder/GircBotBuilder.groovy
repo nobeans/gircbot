@@ -14,18 +14,18 @@ class GircBotBuilder {
         bot = new GircBot()
     }
 
-    def config(Map config) {
+    GircBotBuilder config(Map config) {
         this.config = config
         return this
     }
 
-    def config(Closure clos) {
+    GircBotBuilder config(Closure clos) {
         expandClosure(clos)
         clos.call(bot)
         return this
     }
 
-    def expandClosure(Closure c) {
+    private expandClosure(Closure c) {
         c.delegate = c
         c.metaClass {
             def namePath = []
@@ -51,7 +51,7 @@ class GircBotBuilder {
         }
     }
 
-    def addConfig(name, args) {
+    private addConfig(name, args) {
         log.debug "Parameter: $name = $args (${args.class.name})"
         if (!args) return
         if (args.size() == 1) {
