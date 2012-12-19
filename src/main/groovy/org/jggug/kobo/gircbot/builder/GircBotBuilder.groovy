@@ -14,6 +14,11 @@ class GircBotBuilder {
         bot = new GircBot()
     }
 
+    def config(Map config) {
+        this.config = config
+        return this
+    }
+
     def config(Closure clos) {
         expandClosure(clos)
         clos.call(bot)
@@ -25,7 +30,7 @@ class GircBotBuilder {
         c.metaClass {
             def namePath = []
             methodMissing { String name, args ->
-                log.debug  "Method: $name($args)"
+                log.debug "Method: $name($args)"
                 namePath << name
                 def paramName = namePath.join(".")
 
