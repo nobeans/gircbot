@@ -80,6 +80,7 @@ class GircBotBuilder {
         bot.connect(config["server.host"], config["server.port"])
         config["channel.autoJoinTo"].each { String channelName ->
             bot.joinChannel(channelName)
+            bot.sendMessage(channelName, MessageUtils.getMessage("autoJoined"))
         }
         log.debug "Bot is joined to channels: ${config['channel.autoJoinTo']}"
 
