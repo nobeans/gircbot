@@ -1,4 +1,4 @@
-@GrabResolver(name="local", root="file://localhost/Users/ynak/.m2/repository")
+@GrabResolver(name="cloudbees", root="https://repository-kobo.forge.cloudbees.com/snapshot/")
 @Grab("org.jggug.kobo:gircbot:0.1-SNAPSHOT")
 import org.jggug.kobo.gircbot.builder.*
 import org.jggug.kobo.gircbot.core.*
