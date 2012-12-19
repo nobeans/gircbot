@@ -94,5 +94,9 @@ class GircBotBuilder {
 
         log.debug "Now bot is running as ${bot.name}."
     }
+
+    void stop() {
+        bot.disconnect()
+    }
 }
 
