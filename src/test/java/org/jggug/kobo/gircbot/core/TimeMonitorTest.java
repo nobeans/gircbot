@@ -11,19 +11,14 @@ public class TimeMonitorTest {
 
     private TimeMonitor timeMonitor;
     private TimeEventListener listenerMock;
-    private PrimaryMonitor primaryMonitorMock;
 
     @Before
     public void before() {
         listenerMock = mock(TimeEventListener.class);
 
-        primaryMonitorMock = mock(PrimaryMonitor.class);
-        when(primaryMonitorMock.isPrimaryGlobally()).thenReturn(true);
-
         // Setup SUT
         timeMonitor = new TimeMonitor();
         timeMonitor.addTimeEventListener(listenerMock);
-        timeMonitor.setPrimaryMonitor(primaryMonitorMock);
     }
 
     @Test
@@ -32,7 +27,6 @@ public class TimeMonitorTest {
         timeMonitor.start();
         Thread.sleep(3000);
         // Verify
-        verify(primaryMonitorMock, atLeast(2)).isPrimaryGlobally();
         verify(listenerMock, atLeast(2)).invoke((Date) anyObject());
     }
 

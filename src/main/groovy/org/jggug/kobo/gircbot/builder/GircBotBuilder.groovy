@@ -68,8 +68,6 @@ class GircBotBuilder {
         }
 
         // Setup bot
-        def primaryMonitor = new PrimaryMonitor("#test", config["nick.primaryOrder"] as List, bot)
-        bot.primaryMonitor = primaryMonitor
         bot.name = config["nick.name"]
         bot.setVerbose(Boolean.valueOf(System.properties["debug.gircbot"]))
         config["reactors"].each { reactor ->
@@ -85,7 +83,6 @@ class GircBotBuilder {
         log.debug "Bot is joined to channels: ${config['channel.autoJoinTo']}"
 
         // Setup timer jobs
-        timeMonitor.primaryMonitor = primaryMonitor
         config["jobs"].each { job ->
             timeMonitor.addTimeEventListener(job)
         }

@@ -11,7 +11,6 @@ new GircBotBuilder().config { IrcControl irc ->
     }
     nick {
         name "cobot"
-        primaryOrder "cobot", "cobot_", "cobot__"
     }
     channel { autoJoinTo "#test", "#lounge" }
     reactors (

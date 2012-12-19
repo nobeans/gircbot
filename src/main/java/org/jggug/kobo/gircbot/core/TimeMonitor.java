@@ -15,11 +15,6 @@ public class TimeMonitor {
     private boolean started = false;
     private final List<TimeEventListener> listeners = new ArrayList<TimeEventListener>();
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    private PrimaryMonitor primaryMonitor;
-
-    public void setPrimaryMonitor(PrimaryMonitor primaryMonitor) {
-        this.primaryMonitor = primaryMonitor;
-    }
 
     public void addTimeEventListener(TimeEventListener listener) {
         listeners.add(listener);
@@ -39,7 +34,6 @@ public class TimeMonitor {
         return new Runnable() {
             @Override
             public void run() {
-                if (primaryMonitor == null || !primaryMonitor.isPrimaryGlobally()) return;
                 Date time = new Date();
                 for (TimeEventListener listener : localListeners) {
                     listener.invoke(time);
