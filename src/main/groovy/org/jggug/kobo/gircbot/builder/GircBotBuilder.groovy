@@ -68,7 +68,7 @@ class GircBotBuilder {
         }
 
         // Setup bot
-        bot.name = config["nick.name"]
+        bot.name = config["nick"]
         bot.verbose = Boolean.valueOf(System.properties["debug.gircbot"])
         config["reactors"].each { Reactor reactor ->
             reactor.ircControl = bot

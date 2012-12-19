@@ -10,9 +10,7 @@ new GircBotBuilder().config { IrcControl irc ->
         host "silver"
         port 6667
     }
-    nick {
-        name "cobot_"
-    }
+    nick "cobot_"
     channel { autoJoinTo "#test", "#lounge" }
     reactors [
         new Dictionary(irc, new File(System.properties['user.home'], ".gircbot-dictionary")),
