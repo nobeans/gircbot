@@ -34,7 +34,7 @@ dependencies {
     compile 'pircbot:pircbot:1.5.0'
     compile 'commons-logging:commons-logging:1.1.1'
     runtime 'log4j:log4j:1.2.17'
-    deployerJars 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2'
+    deployerJars 'org.apache.maven.wagon:wagon-webdav-jackrabbit:2.2'
 }
 
 def defaultEncoding = 'UTF-8'
@@ -48,8 +48,8 @@ uploadArchives {
         def configureAuth = {
             authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
         }
-        snapshotRepository(url: "dav:https://repository-${cloudbeesUsername}.forge.cloudbees.com/snapshot", configureAuth)
-        repository(url: "dav:https://repository-${cloudbeesUsername}.forge.cloudbees.com/release", configureAuth)
+        snapshotRepository(url: "https://repository-${cloudbeesUsername}.forge.cloudbees.com/snapshot", configureAuth)
+        repository(url: "https://repository-${cloudbeesUsername}.forge.cloudbees.com/release", configureAuth)
 
         // License
         pom.project {
