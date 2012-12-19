@@ -48,8 +48,8 @@ uploadArchives {
         def configureAuth = {
             authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
         }
-        snapshotRepository(url: "dav:https://repository-${cloudbeesUsername}.forge.cloudbees.com/snapshot/", configureAuth)
-        repository(url: "dav:https://repository-${cloudbeesUsername}.forge.cloudbees.com/release/", configureAuth)
+        snapshotRepository(url: "dav:https://repository-${cloudbeesUsername}.forge.cloudbees.com/snapshot", configureAuth)
+        repository(url: "dav:https://repository-${cloudbeesUsername}.forge.cloudbees.com/release", configureAuth)
 
         // License
         pom.project {
