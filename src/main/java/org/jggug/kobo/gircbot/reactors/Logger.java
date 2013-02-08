@@ -18,7 +18,7 @@ public class Logger extends Reactor {
     @Override
     public void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice) {
         if (target.startsWith("#")) {
-            appender.append("PRIVMSG", target, sourceNick, notice);
+            appender.append("NOTICE", target, sourceNick, notice);
         }
     }
 
