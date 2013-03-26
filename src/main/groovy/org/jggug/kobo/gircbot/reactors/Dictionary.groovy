@@ -1,6 +1,6 @@
 package org.jggug.kobo.gircbot.reactors
 
-import org.jggug.kobo.gircbot.core.*
+import org.jggug.kobo.gircbot.core.Reactor
 
 public class Dictionary extends Reactor {
 
@@ -14,9 +14,10 @@ public class Dictionary extends Reactor {
 
     @Override
     public void onMessage(String channel, String sender, String login, String hostname, String message) {
-        loadDictionary().each { pattern, value ->
+        loadDictionary().each { String pattern, String value ->
             if (message ==~ pattern) {
-                ircControl.sendMessage(channel, "${value} > ${sender}")
+                def response = value.replaceAll(/#SENDER/, sender)
+                ircControl.sendMessage(channel, response)
             }
         }
     }
