@@ -3,7 +3,6 @@ package org.jggug.kobo.gircbot.core;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 public class MessageUtilsTest {
@@ -15,7 +14,7 @@ public class MessageUtilsTest {
 
     @AfterClass
     public static void afterClass() throws Exception {
-        MessageUtils.loadBundle(MessageUtils.BUNDLE_NAMES.get(1)); // messages.properties
+        MessageUtils.loadBundle(MessageUtils.BUNDLE_NAME);
     }
 
     @Test
