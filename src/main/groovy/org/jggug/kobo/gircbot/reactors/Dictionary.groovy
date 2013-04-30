@@ -17,7 +17,7 @@ public class Dictionary extends Reactor {
         loadDictionary().each { String pattern, String value ->
             if (message ==~ pattern) {
                 def response = value.replaceAll(/#SENDER/, sender)
-                ircControl.sendMessage(channel, response)
+                ircControl.sendNotice(channel, response)
             }
         }
     }

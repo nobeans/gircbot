@@ -25,14 +25,14 @@ public class OpDistributor extends Reactor {
     @Override
     public void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
         if (recipient.equals(ircControl.getNick())) {
-            ircControl.sendMessage(channel, MessageUtils.getMessage("reactors.opDistributor.onOp", sourceNick));
+            ircControl.sendNotice(channel, MessageUtils.getMessage("reactors.opDistributor.onOp", sourceNick));
         }
     }
 
     @Override
     public void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
         if (recipient.equals(ircControl.getNick())) {
-            ircControl.sendMessage(channel, MessageUtils.getMessage("reactors.opDistributor.onDeop", sourceNick));
+            ircControl.sendNotice(channel, MessageUtils.getMessage("reactors.opDistributor.onDeop", sourceNick));
         }
     }
 

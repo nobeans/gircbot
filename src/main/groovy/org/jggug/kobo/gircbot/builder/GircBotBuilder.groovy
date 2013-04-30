@@ -1,7 +1,11 @@
 package org.jggug.kobo.gircbot.builder
 
 import groovy.util.logging.Commons
-import org.jggug.kobo.gircbot.core.*
+import org.jggug.kobo.gircbot.core.GircBot
+import org.jggug.kobo.gircbot.core.Job
+import org.jggug.kobo.gircbot.core.MessageUtils
+import org.jggug.kobo.gircbot.core.Reactor
+import org.jggug.kobo.gircbot.core.TimeMonitor
 
 @Commons
 class GircBotBuilder {
@@ -80,7 +84,7 @@ class GircBotBuilder {
         bot.connect(config["server.host"], config["server.port"])
         config["channel.autoJoinTo"].each { String channelName ->
             bot.joinChannel(channelName)
-            bot.sendMessage(channelName, MessageUtils.getMessage("autoJoined"))
+            bot.sendNotice(channelName, MessageUtils.getMessage("autoJoined"))
         }
         log.debug "Bot is joined to channels: ${config['channel.autoJoinTo']}"
 
