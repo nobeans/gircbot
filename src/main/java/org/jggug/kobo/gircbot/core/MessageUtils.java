@@ -1,5 +1,6 @@
 package org.jggug.kobo.gircbot.core;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MessageUtils {
@@ -9,11 +10,15 @@ public class MessageUtils {
     private static ResourceBundle bundle;
 
     protected static void loadBundle(String bundleName) {
-        bundle = ResourceBundle.getBundle(bundleName, control);
+        loadBundle(bundleName, Locale.getDefault());
+    }
+
+    protected static void loadBundle(String bundleName, Locale locale) {
+        bundle = ResourceBundle.getBundle(bundleName, locale, control);
     }
 
     static {
-        loadBundle(BUNDLE_NAME);
+        loadBundle(BUNDLE_NAME); // for default locale
     }
 
     public static String getMessage(String key, Object... args) {

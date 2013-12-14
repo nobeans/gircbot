@@ -3,6 +3,9 @@ package org.jggug.kobo.gircbot.core;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Locale;
+
 import static org.junit.Assert.*;
 
 public class MessageUtilsTest {
@@ -34,6 +37,7 @@ public class MessageUtilsTest {
 
     @Test
     public void getMessage_UTF8() throws Exception {
+        MessageUtils.loadBundle("test", Locale.JAPANESE);
         assertEquals("こんにちは、世界！", MessageUtils.getMessage("hello.ja", "世界"));
     }
 
