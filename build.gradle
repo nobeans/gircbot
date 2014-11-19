@@ -40,3 +40,7 @@ def defaultEncoding = 'UTF-8'
 tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
 tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding }
 
+jar {
+    from configurations.compile.collect { it.directory ? it : zipTree(it) }
+}
+
