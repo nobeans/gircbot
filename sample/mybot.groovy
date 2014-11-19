@@ -11,13 +11,13 @@ new GircBotBuilder().config { IrcControl irc ->
     }
     nick "cobot"
     channel { autoJoinTo "#test", "#lounge" }
-    reactors (
+    reactors [
         new Reactor(irc) {
             void onMessage(String channel, String sender, String login, String hostname, String message) {
                 println "$channel $message"
             }
         },
         new InviteAndByeResponder(irc),
-    )
+    ]
     jobs()
 }.start()
