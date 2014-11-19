@@ -5,7 +5,7 @@ import org.jggug.kobo.gircbot.core.*
 
 new GircBotBuilder().config { IrcControl irc ->
     server {
-        host "silver"
+        host "localhost"
         port 6667
     }
     nick "cobot_"
