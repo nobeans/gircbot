@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.2.1'
+    compile 'org.codehaus.groovy:groovy-all:2.3.7'
     compile 'pircbot:pircbot:1.5.0'
     compile 'commons-logging:commons-logging:1.1.1'
     testCompile 'junit:junit:4.11'
