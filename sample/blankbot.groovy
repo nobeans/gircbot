@@ -1,5 +1,5 @@
-@GrabResolver(name="cloudbees", root="https://repository-kobo.forge.cloudbees.com/snapshot/")
-@Grab("org.jggug.kobo:gircbot:0.1-SNAPSHOT")
+@GrabResolver(name="bintray", root="http://dl.bintray.com/nobeans/maven")
+@Grab("org.jggug.kobo:gircbot:0.2")
 import org.jggug.kobo.gircbot.builder.*
 import org.jggug.kobo.gircbot.core.*
 
