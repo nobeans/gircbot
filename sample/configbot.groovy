@@ -25,7 +25,7 @@ gircbot {
         new InviteAndByeResponder(),
         new Reactor() {
             void onMessage(String channel, String sender, String login, String hostname, String message) {
-                println "$channel $message"
+                ircControl.sendNotice(channel, "Agreed. < $message")
             }
         },
     ]
