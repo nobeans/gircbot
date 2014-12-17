@@ -82,7 +82,11 @@ class GircBotBuilder {
 
         // Connect to server
         bot.connect(config["server.host"], config["server.port"])
-        config["channel.autoJoinTo"].each { String channelName ->
+        def autoJoinTo = config["channel.autoJoinTo"]
+        if (autoJoinTo in String) {
+            autoJoinTo = [autoJoinTo] // support for specifying a single String
+        }
+        autoJoinTo.each { String channelName ->
             bot.joinChannel(channelName)
             bot.sendNotice(channelName, MessageUtils.getMessage("autoJoined"))
         }
