@@ -2,18 +2,18 @@ package org.jggug.kobo.gircbot.reactors
 
 import org.jggug.kobo.gircbot.core.Reactor
 
-public class Dictionary extends Reactor {
+class Dictionary extends Reactor {
 
     File dictionaryFile
     String charset
 
-    public Dictionary(File dictionaryFile, String charset = "UTF-8") {
+    Dictionary(File dictionaryFile, String charset = "UTF-8") {
         this.dictionaryFile = dictionaryFile
         this.charset = charset
     }
 
     @Override
-    public void onMessage(String channel, String sender, String login, String hostname, String message) {
+    void onMessage(String channel, String sender, String login, String hostname, String message) {
         loadDictionary().each { String pattern, String value ->
             if (message ==~ pattern) {
                 def response = value.replaceAll(/#SENDER/, sender)
