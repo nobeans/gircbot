@@ -1,14 +1,14 @@
 @GrabResolver(name="bintray", root="http://dl.bintray.com/nobeans/maven")
-@Grab("org.jggug.kobo:gircbot:0.2")
+@Grab("org.jggug.kobo:gircbot:0.4")
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 
 // You can write this in a configuration file
 def config = new ConfigSlurper().parse '''
 import org.jggug.kobo.gircbot.core.Reactor
-import org.jggug.kobo.gircbot.reactors.Dictionary
-import org.jggug.kobo.gircbot.reactors.OpDistributor
-import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
 import org.jggug.kobo.gircbot.jobs.Reminder
+import org.jggug.kobo.gircbot.reactors.Dictionary
+import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
+import org.jggug.kobo.gircbot.reactors.OpDistributor
 
 gircbot {
     server {
@@ -20,7 +20,7 @@ gircbot {
         autoJoinTo = ["#test", "#lounge"]
     }
     reactors = [
-        new Dictionary(new File(System.properties['user.home'], ".gircbot-dictionary")),
+        new Dictionary(new File(System.properties['user.home'], ".gircbot/dictionary")),
         new OpDistributor(),
         new InviteAndByeResponder(),
         new Reactor() {
@@ -30,7 +30,7 @@ gircbot {
         },
     ]
     jobs = [
-        new Reminder(new File(System.properties['user.home'], ".gircbot-reminder")),
+        new Reminder(new File(System.properties['user.home'], ".gircbot/reminder")),
     ]
 }
 '''
