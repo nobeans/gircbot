@@ -18,6 +18,9 @@ apply plugin:'groovy'
 
 defaultTasks 'clean', 'test'
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 buildscript {
     apply from: file('gradle/buildscript.gradle'), to: buildscript
 }
