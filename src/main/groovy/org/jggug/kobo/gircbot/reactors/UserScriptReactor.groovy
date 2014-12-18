@@ -12,6 +12,8 @@ class UserScriptReactor extends Reactor {
 
     @Override
     void onMessage(String channel, String sender, String login, String hostname, String message) {
+        if (!scriptDir.exists()) return
+
         def tokens = message.trim().split(/\s+/) as List
 
         // If there are not enough message, just ignore. It's just a normal message, not a command.

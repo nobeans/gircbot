@@ -13,6 +13,7 @@ class UserScriptJob extends Job {
 
     @Override
     void invoke(Date time) {
+        if (!scriptDir.exists()) return
         scriptDir.eachFileRecurse(FileType.FILES) { File file ->
             runScript(file, time)
         }
