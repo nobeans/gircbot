@@ -25,12 +25,12 @@ public class Reminder extends Job {
     public void invoke(Date time) {
         loadData().each { pattern, map ->
             if (time.format("yyyy-MM-dd HH:mm:ss") =~ pattern) {
-                if (!map.message || !map.target) return
+                if (!map.message || !map.channel) return
                 def type = map.type ?: ""
                 if (type.toUpperCase() == 'NOTICE') {
-                    ircControl.sendNotice(map.target, "${map.message} > ${map.target}")
+                    ircControl.sendNotice(map.channel, "${map.message} > ${map.channel}")
                 } else {
-                    ircControl.sendMessage(map.target, "${map.message} > ${map.target}")
+                    ircControl.sendMessage(map.channel, "${map.message} > ${map.channel}")
                 }
             }
         }
