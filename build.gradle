@@ -40,6 +40,9 @@ dependencies {
 }
 
 def defaultEncoding = 'UTF-8'
-tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
+tasks.withType(AbstractCompile) each {
+    it.options.encoding = defaultEncoding
+    it.options.debug = true
+}
 tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding }
 
